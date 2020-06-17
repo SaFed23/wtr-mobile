@@ -1,10 +1,18 @@
 import React from "react";
 import {TextInput, Text, View, StyleSheet, TouchableOpacity} from "react-native";
+import navigation from "../navigation";
 
 class LoginView extends React.Component {
     state = {
         username: "",
         password: "",
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(prevProps.user.loading === true && this.props.user.loading === false) {
+            if (this.props.user.currentUser.token)
+                this.props.navigation.navigate('Application');
+        }
     }
 
     onChangeLogin = text => {
@@ -24,6 +32,7 @@ class LoginView extends React.Component {
             username: this.state.username,
             password: this.state.password,
         });
+        this.setState({username: "", password: ""});
     }
 
     render() {
@@ -53,6 +62,11 @@ class LoginView extends React.Component {
                             value={this.state.password}
                             onChange={text => this.onChangePassword(text)}
                         />
+                    </View>
+                    <View style={{flexDirection: "row", justifyContent: "center"}}>
+                            <Text style={{color: "red"}}>
+                                {this.props.user.message}
+                            </Text>
                     </View>
                     <View style={{flexDirection: "row", justifyContent: "center", marginTop: "7%"}}>
                         <TouchableOpacity style={styles.button} onPress={this.onLogin}>

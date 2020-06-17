@@ -17,7 +17,6 @@ export function userAuthorization(user) {
         });
         try {
             const result = await authorization(user);
-            console.log("result: ", result);
             if (result.token !== undefined)
                 dispatch({
                     type: USERS_AUTH,
@@ -37,7 +36,6 @@ export function userAuthorization(user) {
                     },
                 })
         } catch (e) {
-            console.log(e)
             dispatch({
                 type: USERS_FAILED,
                 payload: {

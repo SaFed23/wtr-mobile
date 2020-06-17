@@ -6,7 +6,9 @@ import {userAuthorization} from "../actions/usersActions";
 function Login(props) {
     return (
         <LoginView
+            navigation={props.navigation}
             authorization={props.authorization}
+            user={props.users}
         />
     )
 }
