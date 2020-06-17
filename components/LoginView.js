@@ -32,27 +32,33 @@ class LoginView extends React.Component {
                 <View style={{flexDirection: "row", justifyContent: "center", marginTop: "40%"}}>
                     <Text style={styles.label}>WTR Lite</Text>
                 </View>
-                <View style={{flexDirection: "row", justifyContent: "center", marginTop: "10%"}}>
-                    <Text style={styles.text}>Username</Text>
-                    <TextInput
-                        style={styles.inputField}
-                        value={this.state.username}
-                        onChange={text => this.onChangeLogin(text)}
-                    />
-                </View>
-                <View style={{flexDirection: "row", justifyContent: "center", marginTop: "4%"}}>
-                    <Text style={styles.text}>Password</Text>
-                    <TextInput
-                        style={styles.inputField}
-                        secureTextEntry={true}
-                        value={this.state.password}
-                        onChange={text => this.onChangePassword(text)}
-                    />
-                </View>
-                <View style={{flexDirection: "row", justifyContent: "center", marginTop: "7%"}}>
-                    <TouchableOpacity style={styles.button} onPress={this.onLogin}>
-                        <Text style={{fontSize: 20, color: "white", marginTop: "5%"}}>Login</Text>
-                    </TouchableOpacity>
+                <View style={{flexDirection: "column", justifyContent: "center"}}>
+                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: "10%"}}>
+                        <Text style={styles.text}>Username</Text>
+                    </View>
+                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: "2%"}}>
+                        <TextInput
+                            style={styles.inputField}
+                            value={this.state.username}
+                            onChange={text => this.onChangeLogin(text)}
+                        />
+                    </View>
+                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: "4%"}}>
+                        <Text style={styles.text}>Password</Text>
+                    </View>
+                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: "2%"}}>
+                        <TextInput
+                            style={styles.inputField}
+                            secureTextEntry={true}
+                            value={this.state.password}
+                            onChange={text => this.onChangePassword(text)}
+                        />
+                    </View>
+                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: "7%"}}>
+                        <TouchableOpacity style={styles.button} onPress={this.onLogin}>
+                            <Text style={{fontSize: 20, color: "white", marginTop: "5%"}}>Login</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </>
         )
