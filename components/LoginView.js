@@ -1,6 +1,12 @@
 import React from "react";
-import {TextInput, Text, View, StyleSheet, TouchableOpacity} from "react-native";
-import navigation from "../navigation";
+import {
+    TextInput,
+    Text,
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    ActivityIndicator
+} from "react-native";
 
 class LoginView extends React.Component {
     state = {
@@ -41,8 +47,13 @@ class LoginView extends React.Component {
                 <View style={{flexDirection: "row", justifyContent: "center", marginTop: "40%"}}>
                     <Text style={styles.label}>WTR Lite</Text>
                 </View>
+                <View style={[styles.container, styles.horizontal]}>
+                    <ActivityIndicator size="large" 
+                                       color="lightblue"
+                                       animating={this.props.user.loading}/>
+                </View>
                 <View style={{flexDirection: "column", justifyContent: "center"}}>
-                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: "10%"}}>
+                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: "2%"}}>
                         <Text style={styles.text}>Username</Text>
                     </View>
                     <View style={{flexDirection: "row", justifyContent: "center", marginTop: "2%"}}>
