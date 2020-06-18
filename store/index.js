@@ -25,7 +25,7 @@ const oldState = loadState();
 const store = createStore(rootReducer, undefined, applyMiddleware(thunk));
 
 store.subscribe(() => {
-    console.log(store.getState())
+    console.log("Debug: ", store.getState())
     // saveState(store.getState());
 });
 

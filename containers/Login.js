@@ -4,18 +4,19 @@ import LoginView from "../components/LoginView";
 import {userAuthorization} from "../actions/usersActions";
 
 function Login(props) {
+    console.log(props.user)
     return (
         <LoginView
             navigation={props.navigation}
             authorization={props.authorization}
-            user={props.users}
+            user={props.user}
         />
     )
 }
 
 const mapStateToProps = store => {
     return {
-        users: store.users,
+        user: store.user,
     }
 };
 

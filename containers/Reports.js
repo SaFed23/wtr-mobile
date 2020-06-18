@@ -1,24 +1,29 @@
 import React from "react";
 import {connect} from "react-redux"
 import ReportsView from "../components/ReportsView";
+import {initReports} from "../actions/reportsActions";
 
 function Reports(props) {
     return (
         <ReportsView
             navigation={props.navigation}
-            user={props.users}
+            user={props.user}
+            reports={props.reports}
+            initReports={props.initReports}
         />
     )
 }
 
 const mapStateToProps = store => {
     return {
-        users: store.users,
+        user: store.user,
+        reports: store.reports,
     }
 };
 
 const mapFuncToProps = dispatch => {
     return {
+        initReports: (date, token) => dispatch(initReports(date, token)),
     }
 };
 

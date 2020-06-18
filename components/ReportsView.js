@@ -1,5 +1,5 @@
 import React from "react";
-import {Text, ScrollView, TouchableOpacity, View, StyleSheet} from "react-native";
+import {Text, ScrollView, TouchableOpacity, View, StyleSheet, ActivityIndicator} from "react-native";
 import {getReports} from "../routes/reportDetailsView";
 
 const dates = ["2020-06-18", "2020-06-17", "2020-06-11", "2020-06-07", "2020-05-20", "2020-05-19"]
@@ -7,22 +7,40 @@ const dates = ["2020-06-18", "2020-06-17", "2020-06-11", "2020-06-07", "2020-05-
 class ReportsView extends React.Component {
     state = {
         countOfWeek: 1,
-        arrayOfDate: [],
+        arrayOfDates: [],
     }
 
     componentDidMount() {
-        getReports({
-            dateStart: "2020-06-07",
-            dateEnd: "2020-06-18",
+        const lastDate = new Date();
+        lastDate.setDate(lastDate.getDate() - 28);
+        this.props.initReports({
+            dateStart: lastDate.toISOString().split("T")[0],
+            dateEnd: new Date().toISOString().split("T")[0],
         }, this.props.user.currentUser.token)
-            .then(res => res.json())
-            .then(data => console.log(data));
-
     }
 
-    findInterval = (countOfWeek) => {
+    componentDidUpdate(prevProps, prevState) {
+        if(prevProps.reports.loading === true && this.props.reports.loading === false
+            || prevState.countOfWeek !== this.state.countOfWeek) {
+            const lastDate = new Date();
+            const arrayOfDates = [];
+            lastDate.setDate(lastDate.getDate() - this.state.countOfWeek * 7 + 1);
+            const arrayOfDatesWithReport = this.props.reports.reports.map(report => report.reportDetailsDate)
+            while (lastDate < new Date()) {
+                if(!arrayOfDatesWithReport.includes(lastDate.toISOString().split("T")[0])){
+                    arrayOfDates.push(lastDate.toISOString().split("T")[0])
+                }
+                lastDate.setDate(lastDate.getDate() + 1);
+            }
+            this.setState({
+                arrayOfDates: arrayOfDates,
+            })
+        }
+    }
+
+    findInterval = () => {
         const lastDate = new Date();
-        lastDate.setDate(lastDate.getDate() - countOfWeek * 7);
+        lastDate.setDate(lastDate.getDate() - this.state.countOfWeek * 7);
         return dates.filter(date => new Date(date) < new Date() && new Date(date) > lastDate);
     }
 
@@ -40,6 +58,12 @@ class ReportsView extends React.Component {
                 countOfWeek: this.state.countOfWeek - 1,
             });
         }
+    }
+
+    onPressDate = (date) => {
+        this.props.navigation.navigate('Search', {
+            date: "20-12-2020"
+        });
     }
 
     render() {
@@ -69,15 +93,21 @@ class ReportsView extends React.Component {
                         </View>
                     </TouchableOpacity>
                 </View>
+                <View style={[styles.container, styles.horizontal]}>
+                    <ActivityIndicator size="large"
+                                       color="lightblue"
+                                       animating={this.props.reports.loading}/>
+                </View>
                 <ScrollView>
                     <View style={{
                         flexDirection: "row",
                         flexWrap: "wrap",
                         justifyContent: "space-between",
                     }}>
-                    {dates.map((date, index) => {
+                    {this.state.arrayOfDates.map((date, index) => {
                         return <TouchableOpacity
                             key={index}
+                            onPress={this.onPressDate}
                             style={{
                                 margin: "2%",
                                 width: 100,
