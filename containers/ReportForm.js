@@ -7,6 +7,7 @@ function ReportForm (props) {
     return (
         <ReportFormView
             navigation={props.navigation}
+            params={props.route.params}
         />
     )
 }

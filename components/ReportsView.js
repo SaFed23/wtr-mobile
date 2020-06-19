@@ -2,8 +2,6 @@ import React from "react";
 import {Text, ScrollView, TouchableOpacity, View, StyleSheet, ActivityIndicator} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-const dates = ["2020-06-18", "2020-06-17", "2020-06-11", "2020-06-07", "2020-05-20", "2020-05-19"]
-
 class ReportsView extends React.Component {
     state = {
         countOfWeek: 1,
@@ -38,12 +36,6 @@ class ReportsView extends React.Component {
         }
     }
 
-    findInterval = () => {
-        const lastDate = new Date();
-        lastDate.setDate(lastDate.getDate() - this.state.countOfWeek * 7);
-        return dates.filter(date => new Date(date) < new Date() && new Date(date) > lastDate);
-    }
-
     increaseCountOfWeek = () => {
         if(this.state.countOfWeek < 4) {
             this.setState({
@@ -60,8 +52,10 @@ class ReportsView extends React.Component {
         }
     }
 
-    onPressDate = (date) => {
-        this.props.navigation.navigate('ReportForm');
+    onPressDate = (index) => {
+        this.props.navigation.navigate('ReportForm', {
+            date: this.state.arrayOfDates[index],
+        });
     }
 
     render() {
@@ -71,7 +65,11 @@ class ReportsView extends React.Component {
                     <Text style={{fontSize: 20, marginTop: "2%"}}>Count of week</Text>
                 </View>
                 <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                    <TouchableOpacity style={styles.button} onPress={this.decreaseCountOfWeek}>
+                    <TouchableOpacity
+                        style={this.state.countOfWeek === 1 ? styles.disabledButton : styles.button}
+                        onPress={this.decreaseCountOfWeek}
+                        disabled={this.state.countOfWeek === 1}
+                    >
                         <View style={{flexDirection: "row", justifyContent: "center"}}>
                             <View style={{flexDirection: "column", justifyContent: "center"}}>
                                 <Text style={styles.char}>-</Text>
@@ -83,7 +81,11 @@ class ReportsView extends React.Component {
                             <Text style={{fontSize: 30}}>{this.state.countOfWeek}</Text>
                         </View>
                     </View>
-                    <TouchableOpacity style={styles.button} onPress={this.increaseCountOfWeek}>
+                    <TouchableOpacity
+                        style={this.state.countOfWeek === 4 ? styles.disabledButton : styles.button}
+                        onPress={this.increaseCountOfWeek}
+                        disabled={this.state.countOfWeek === 4}
+                    >
                         <View style={{flexDirection: "row", justifyContent: "center"}}>
                             <View style={{flexDirection: "column", justifyContent: "center"}}>
                                 <Text style={styles.char}>+</Text>
@@ -105,7 +107,7 @@ class ReportsView extends React.Component {
                     {this.state.arrayOfDates.map((date, index) => {
                         return <TouchableOpacity
                             key={index}
-                            onPress={this.onPressDate}
+                            onPress={this.onPressDate.bind(this, index)}
                             style={styles.buttonWithDate}>
                             <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                 <Text style={styles.date}>
@@ -125,9 +127,17 @@ class ReportsView extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    disabledButton: {
+        margin: "4%",
+        backgroundColor: "rgba(154,222,130,0.42)",
+        opacity: 100,
+        width: "20%",
+        height: 40,
+        borderRadius: 6,
+    },
     button: {
         margin: "4%",
-        backgroundColor: "lightgreen",
+        backgroundColor: "#9ade82",
         width: "20%",
         height: 40,
         borderRadius: 6,

@@ -1,5 +1,5 @@
 import {REPORTS_FAILED, REPORTS_REQUEST, REPORTS_SUCCESS} from "../reducers/reportsReducer";
-import {getReports} from "../routes/reportDetailsView";
+import {getReports} from "../routes/reportDetailsRoutes";
 
 export function initReports(date, token) {
     return async dispatch => {
