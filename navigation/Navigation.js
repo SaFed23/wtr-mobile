@@ -1,8 +1,7 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
-import Login from './containers/Login'
-import Application from "./components/ApplicationView";
-
+import Login from '../containers/Login'
+import Application from "./ApplicationNavigation";
 
 const Stack = createStackNavigator({
     Login: {
@@ -14,17 +13,9 @@ const Stack = createStackNavigator({
     Application: {
         screen: Application,
         navigationOptions: {
-            title: 'Reports'
+            title: 'Application'
         }
     },
-    // ImagesGrid: {
-    //     screen: GridScreen,
-    //     navigationOptions: ({ navigation }) => {
-    //         return {
-    //             title: navigation.state.params.title
-    //         };
-    //     }
-    // }
 },
 {
     initialRouteName: 'Login'

@@ -1,6 +1,6 @@
 import React from "react";
 import {Text, ScrollView, TouchableOpacity, View, StyleSheet, ActivityIndicator} from "react-native";
-import {getReports} from "../routes/reportDetailsView";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const dates = ["2020-06-18", "2020-06-17", "2020-06-11", "2020-06-07", "2020-05-20", "2020-05-19"]
 
@@ -61,9 +61,7 @@ class ReportsView extends React.Component {
     }
 
     onPressDate = (date) => {
-        this.props.navigation.navigate('Search', {
-            date: "20-12-2020"
-        });
+        this.props.navigation.navigate('ReportForm');
     }
 
     render() {
@@ -108,14 +106,14 @@ class ReportsView extends React.Component {
                         return <TouchableOpacity
                             key={index}
                             onPress={this.onPressDate}
-                            style={{
-                                margin: "2%",
-                                width: 100,
-                                height: 100,
-                                borderRadius: 50,
-                                backgroundColor: "#249aff"}}>
-                            <View style={{flexDirection: "row", justifyContent: "center"}}>
-                                <Text style={{marginTop: "40%", color: "white", fontSize: 17, fontWeight: "bold"}}>{date}</Text>
+                            style={styles.buttonWithDate}>
+                            <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                                <Text style={styles.date}>
+                                    {date}
+                                </Text>
+                                <View style={{marginTop: "8%", marginRight: "3%"}}>
+                                    <Icon name={"angle-right"} size={40} color={"white"}/>
+                                </View>
                             </View>
                         </TouchableOpacity>
                     })}
@@ -138,7 +136,22 @@ const styles = StyleSheet.create({
         fontSize: 30,
         color: "white",
         fontWeight: "bold",
-    }
+    },
+    date: {
+        marginTop: "8%",
+        marginLeft: "8%",
+        color: "white",
+        fontSize: 30,
+        fontWeight: "bold"
+    },
+    buttonWithDate: {
+        marginLeft: "4%",
+        marginRight: "4%",
+        marginBottom: "2%",
+        width: 380,
+        height: 100,
+        borderRadius: 20,
+        backgroundColor: "#249aff"}
 });
 
 export default ReportsView;
