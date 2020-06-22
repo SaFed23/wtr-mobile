@@ -2,6 +2,7 @@ import React from "react";
 import {Text, TouchableOpacity, View, StyleSheet, ActivityIndicator, TextInput, ScrollView} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import RNPickerSelect from 'react-native-picker-select';
+import {saveReport} from "../routes/reportDetailsRoutes";
 
 
 class ReportFormView extends React.Component {
@@ -9,12 +10,13 @@ class ReportFormView extends React.Component {
         project: null,
         feature: null,
         task: null,
-        detailedTasks: null,
+        detailedTask: null,
         location: null,
         factor: null,
         hours: "0",
         workUnits: "0",
-        comment: "",
+        comments: "",
+        message: "",
     }
 
     componentDidMount() {
@@ -27,13 +29,19 @@ class ReportFormView extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(this.props.reports.reports.length !== prevProps.reports.reports.length){
+            this.props.navigation.goBack();
+        }
+    }
+
     onChooseProject = (value) => {
         if(value !== null) {
             this.setState({
                 project: value,
                 feature: null,
                 task: null,
-                detailedTasks: null,
+                detailedTask: null,
             })
         }
     }
@@ -43,7 +51,7 @@ class ReportFormView extends React.Component {
             this.setState({
                 feature: value,
                 task: null,
-                detailedTasks: null,
+                detailedTask: null,
             })
         }
     }
@@ -52,7 +60,7 @@ class ReportFormView extends React.Component {
         if(value !== null) {
             this.setState({
                 task: value,
-                detailedTasks: null,
+                detailedTask: null,
             })
         }
     }
@@ -93,10 +101,47 @@ class ReportFormView extends React.Component {
         })
     }
 
-    onChangeComment = text => {
+    onChangeComments = text => {
         this.setState({
-            comment: text.nativeEvent.text,
+            comments: text.nativeEvent.text,
         })
+    }
+
+    onSubmit = (status) => {
+        if(this.state.project === null) {
+            this.setState({message: "Project not selected!"})
+        } else if(this.state.feature === null) {
+            this.setState({message: "Feature not selected!"})
+        } else if(this.state.task === null) {
+            this.setState({message: "Task not selected!"})
+        } else if(this.state.detailedTask === null) {
+            this.setState({message: "Detailed task not selected!"})
+        } else if(this.state.location === null) {
+            this.setState({message: "Location task not selected!"})
+        } else if(this.state.factor === null) {
+            this.setState({message: "Factor task not selected!"})
+        } else {
+            const report = {
+                project: this.props.reportsData.projects
+                    .find(project => project.projectId === +this.state.project),
+                feature: this.props.reportsData.features
+                    .find(feature => feature.featureId === +this.state.feature),
+                task: this.props.reportsData.tasks
+                    .find(task => task.taskId === +this.state.task),
+                detailedTask: this.props.reportsData.detailedTasks
+                    .find(detailedTask => detailedTask.detailedTaskId === +this.state.detailedTask),
+                location: this.props.reportsData.locations
+                    .find(location => location.locationId === +this.state.location),
+                factor: this.props.reportsData.factors
+                    .find(factor => factor.factorId === +this.state.factor),
+                hours: +this.state.hours,
+                workUnits: +this.state.workUnits,
+                comments: this.state.comments,
+                reportDetailsDate: this.props.params.date,
+                status
+            };
+            this.props.saveReport(report, this.props.reports.reports, this.props.user.currentUser.token);
+        }
     }
 
     render() {
@@ -231,24 +276,35 @@ class ReportFormView extends React.Component {
                                 })}
                         />
                     </View>
-                    <View style={styles.commentView}>
+                    <View style={styles.commentsView}>
                         <Text style={styles.text}>
-                            Comment
+                            Comments
                         </Text>
                     </View>
-                    <View style={styles.commentView}>
+                    <View style={styles.commentsView}>
                         <TextInput
-                            style={styles.inputCommentField}
+                            style={styles.inputCommentsField}
                             multiline={true}
-                            value={this.state.comment}
-                            onChange={text => this.onChangeComment(text)}
+                            value={this.state.comments}
+                            onChange={text => this.onChangeComments(text)}
                         />
                     </View>
+                    <View style={{flexDirection: "row", justifyContent: "center"}}>
+                        <Text style={{color: "red"}}>
+                            {this.state.message}
+                        </Text>
+                    </View>
                     <View style={{flexDirection: "row", justifyContent: "center", marginTop: "7%"}}>
-                        <TouchableOpacity style={[styles.button, {backgroundColor: "lightgreen"}]}>
+                        <TouchableOpacity
+                            style={[styles.button, {backgroundColor: "lightgreen"}]}
+                            onPress={this.onSubmit.bind(this, "REGISTERED")}
+                        >
                             <Text style={{fontSize: 20, marginTop: "5%"}}>Submit</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.button, {backgroundColor: "lightgray"}]}>
+                        <TouchableOpacity
+                            style={[styles.button, {backgroundColor: "lightgray"}]}
+                            onPress={this.onSubmit.bind(this, "PRIVATE")}
+                        >
                             <Text style={{fontSize: 20, marginTop: "5%"}}>Submit as private</Text>
                         </TouchableOpacity>
                     </View>
@@ -280,7 +336,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 10
     },
-    inputCommentField: {
+    inputCommentsField: {
         width: "100%",
         height: 120,
         borderColor: 'lightblue',
@@ -294,7 +350,7 @@ const styles = StyleSheet.create({
         marginRight: "5%",
         marginLeft: "5%"
     },
-    commentView: {
+    commentsView: {
         flexDirection: "row",
         justifyContent: "center",
         marginLeft: "5%",

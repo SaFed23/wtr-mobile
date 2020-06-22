@@ -19,11 +19,14 @@ class ReportsView extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if(prevProps.reports.loading === true && this.props.reports.loading === false
-            || prevState.countOfWeek !== this.state.countOfWeek) {
+            || prevState.countOfWeek !== this.state.countOfWeek
+            || this.props.reports.reports.length !== prevProps.reports.reports.length) {
             const lastDate = new Date();
             const arrayOfDates = [];
             lastDate.setDate(lastDate.getDate() - this.state.countOfWeek * 7 + 1);
-            const arrayOfDatesWithReport = this.props.reports.reports.map(report => report.reportDetailsDate)
+            const arrayOfDatesWithReport = this.props.reports.reports
+                .filter(report => report.status !== "PRIVATE" && report.status !== "REJECTED")
+                .map(report => report.reportDetailsDate)
             while (lastDate < new Date()) {
                 if(!arrayOfDatesWithReport.includes(lastDate.toISOString().split("T")[0])){
                     arrayOfDates.push(lastDate.toISOString().split("T")[0])
