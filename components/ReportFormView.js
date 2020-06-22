@@ -1,5 +1,5 @@
 import React from "react";
-import {Text, TouchableOpacity, View, StyleSheet, ActivityIndicator} from "react-native";
+import {Text, TouchableOpacity, View, StyleSheet, ActivityIndicator, TextInput, ScrollView} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -12,10 +12,19 @@ class ReportFormView extends React.Component {
         detailedTasks: null,
         location: null,
         factor: null,
+        hours: "0",
+        workUnits: "0",
+        comment: "",
     }
 
     componentDidMount() {
         this.props.getReportsData(this.props.user.currentUser.token);
+        if(new Date(this.props.params.date).getDay() !== 0
+            && new Date(this.props.params.date).getDay() !== 6){
+            this.setState({
+                hours: "8",
+            })
+        }
     }
 
     onChooseProject = (value) => {
@@ -72,6 +81,24 @@ class ReportFormView extends React.Component {
         }
     }
 
+    onChangeHours = text => {
+        this.setState({
+            hours: text.nativeEvent.text,
+        });
+    }
+
+    onChangeWorkUnits = text => {
+        this.setState({
+            workUnits: text.nativeEvent.text,
+        })
+    }
+
+    onChangeComment = text => {
+        this.setState({
+            comment: text.nativeEvent.text,
+        })
+    }
+
     render() {
         return (
             <>
@@ -92,6 +119,7 @@ class ReportFormView extends React.Component {
                                        color="lightblue"
                                        animating={this.props.reportsData.loading}/>
                 </View>
+                <ScrollView>
                 <View style={{flexDirection: "column", justifyContent: "center"}}>
                     <View style={{borderBottomWidth: 1, marginLeft: "5%", marginRight: "5%", borderColor: "lightblue"}}>
                         <RNPickerSelect
@@ -155,17 +183,77 @@ class ReportFormView extends React.Component {
                                     })}
                         />
                     </View>
-                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: "7%"}}>
-                        <TouchableOpacity style={styles.button}>
-                            <Text style={{fontSize: 20, marginTop: "5%"}}>Submit</Text>
-                        </TouchableOpacity>
+                    <View style={styles.blockWithHours}>
+                        <Text style={[styles.text, {marginLeft: "15%"}]}>
+                            Hours
+                        </Text>
+                        <Text style={[styles.text, {marginRight: "15%"}]}>
+                            Work Units
+                        </Text>
+                    </View>
+                    <View style={{flexDirection: "row", justifyContent: "space-between", marginLeft: "5%", marginRight: "5%"}}>
+                        <TextInput
+                            style={styles.inputField}
+                            value={this.state.hours}
+                            onChange={text => this.onChangeHours(text)}
+                        />
+                        <TextInput
+                            style={styles.inputField}
+                            value={this.state.workUnits}
+                            onChange={text => this.onChangeWorkUnits(text)}
+                        />
+                    </View>
+                    <View style={styles.selectItem}>
+                        <RNPickerSelect
+                            onValueChange={(value) => {this.onChooseLocation(value)}}
+                            placeholder={{label: "Select a location...", value: null}}
+                            style={{placeholder: {color: "black"}}}
+                            items={this.props.reportsData.locations
+                                    .map(location => {
+                                        return {
+                                            label: location.locationName,
+                                            value: location.locationId,
+                                        }
+                                    })}
+                        />
+                    </View>
+                    <View style={styles.selectItem}>
+                        <RNPickerSelect
+                            onValueChange={(value) => {this.onChooseFactor(value)}}
+                            placeholder={{label: "Select a factor...", value: null}}
+                            style={{placeholder: {color: "black"}}}
+                            items={this.props.reportsData.factors
+                                .map(factor => {
+                                    return {
+                                        label: factor.factorName,
+                                        value: factor.factorId,
+                                    }
+                                })}
+                        />
+                    </View>
+                    <View style={styles.commentView}>
+                        <Text style={styles.text}>
+                            Comment
+                        </Text>
+                    </View>
+                    <View style={styles.commentView}>
+                        <TextInput
+                            style={styles.inputCommentField}
+                            multiline={true}
+                            value={this.state.comment}
+                            onChange={text => this.onChangeComment(text)}
+                        />
                     </View>
                     <View style={{flexDirection: "row", justifyContent: "center", marginTop: "7%"}}>
-                        <TouchableOpacity style={styles.button}>
+                        <TouchableOpacity style={[styles.button, {backgroundColor: "lightgreen"}]}>
+                            <Text style={{fontSize: 20, marginTop: "5%"}}>Submit</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.button, {backgroundColor: "lightgray"}]}>
                             <Text style={{fontSize: 20, marginTop: "5%"}}>Submit as private</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
+                </ScrollView>
             </>
         );
     }
@@ -177,14 +265,49 @@ const styles = StyleSheet.create({
         width: "20%"
     },
     text: {
-        fontSize: 20,
-        marginRight: "2%"
+        fontSize: 17,
     },
     selectItem: {
         borderBottomWidth: 1,
         marginLeft: "5%",
         marginRight: "5%",
         borderColor: "lightblue"
+    },
+    inputField: {
+        width: 180,
+        height: 40,
+        borderColor: 'lightblue',
+        borderWidth: 2,
+        borderRadius: 10
+    },
+    inputCommentField: {
+        width: "100%",
+        height: 120,
+        borderColor: 'lightblue',
+        borderWidth: 2,
+        borderRadius: 10
+    },
+    blockWithHours: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: "5%",
+        marginRight: "5%",
+        marginLeft: "5%"
+    },
+    commentView: {
+        flexDirection: "row",
+        justifyContent: "center",
+        marginLeft: "5%",
+        marginRight: "5%",
+        marginTop: "3%"
+    },
+    button: {
+        width: 180,
+        height: 50,
+        margin: "2%",
+        borderRadius: 10,
+        flexDirection: "row",
+        justifyContent: "center"
     }
 })
 

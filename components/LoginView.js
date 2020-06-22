@@ -111,7 +111,8 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 10,
         flexDirection: "row",
-        justifyContent: "center"}
+        justifyContent: "center"
+    }
 });
 
 export default LoginView;
