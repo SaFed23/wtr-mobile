@@ -1,9 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import PrivateReportsView from "../components/PrivateReportsView";
-import RejectedReportsView from "../components/RejectedReportsView";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Settings from "../containers/Settings";
+import PrivateReportsNavigation from "./PrivateReportsNavigation";
+import RejectedReportsNavigation from "./RejectedReportsNavigation";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,8 +26,8 @@ export default function AccountNavigation() {
                 },
             })}
         >
-            <Tab.Screen name="Private" component={PrivateReportsView} />
-            <Tab.Screen name="Rejected" component={RejectedReportsView} />
+            <Tab.Screen name="Private" component={PrivateReportsNavigation} />
+            <Tab.Screen name="Rejected" component={RejectedReportsNavigation} />
             <Tab.Screen name="Settings" component={Settings} />
         </Tab.Navigator>
     );

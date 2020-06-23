@@ -2,6 +2,7 @@ import React from "react";
 import {Text, ScrollView, TouchableOpacity, View, StyleSheet, ActivityIndicator} from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import Icon from "react-native-vector-icons/FontAwesome";
+import PagesView from "./PagesView";
 
 class ReportsView extends React.Component {
     state = {
@@ -73,38 +74,10 @@ class ReportsView extends React.Component {
     render() {
         return (
             <>
-                <View style={{flexDirection: "row", justifyContent: "center"}}>
-                    <Text style={{fontSize: 20, marginTop: "2%"}}>Count of week</Text>
-                </View>
-                <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                    <TouchableOpacity
-                        style={this.state.countOfWeek === 1 ? styles.disabledButton : styles.button}
-                        onPress={this.decreaseCountOfWeek}
-                        disabled={this.state.countOfWeek === 1}
-                    >
-                        <View style={{flexDirection: "row", justifyContent: "center"}}>
-                            <View style={{flexDirection: "column", justifyContent: "center"}}>
-                                <Text style={styles.char}>-</Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <View style={{flexDirection: "row", justifyContent: "center"}}>
-                        <View style={{flexDirection: "column", justifyContent: "center"}}>
-                            <Text style={{fontSize: 30}}>{this.state.countOfWeek}</Text>
-                        </View>
-                    </View>
-                    <TouchableOpacity
-                        style={this.state.countOfWeek === 4 ? styles.disabledButton : styles.button}
-                        onPress={this.increaseCountOfWeek}
-                        disabled={this.state.countOfWeek === 4}
-                    >
-                        <View style={{flexDirection: "row", justifyContent: "center"}}>
-                            <View style={{flexDirection: "column", justifyContent: "center"}}>
-                                <Text style={styles.char}>+</Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+                <PagesView
+                    countOfWeek={this.state.countOfWeek}
+                    increaseCountOfWeek={this.increaseCountOfWeek}
+                    decreaseCountOfWeek={this.decreaseCountOfWeek}/>
                 <View style={[styles.container, styles.horizontal]}>
                     <ActivityIndicator size="large"
                                        color="lightblue"
@@ -139,26 +112,6 @@ class ReportsView extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    disabledButton: {
-        margin: "4%",
-        backgroundColor: "rgba(154,222,130,0.42)",
-        opacity: 100,
-        width: "20%",
-        height: 40,
-        borderRadius: 6,
-    },
-    button: {
-        margin: "4%",
-        backgroundColor: "#9ade82",
-        width: "20%",
-        height: 40,
-        borderRadius: 6,
-    },
-    char: {
-        fontSize: 30,
-        color: "white",
-        fontWeight: "bold",
-    },
     date: {
         marginTop: "8%",
         marginLeft: "8%",
