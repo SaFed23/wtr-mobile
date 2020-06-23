@@ -1,4 +1,5 @@
 import {
+    USER_LOCATION,
     USERS_AUTH,
     USERS_FAILED,
     USERS_REQUEST,
@@ -46,4 +47,13 @@ export function userAuthorization(user) {
             })
         }
     }
+}
+
+export function changeLocation(location) {
+    return ({
+        type: USER_LOCATION,
+        payload: {
+            location: location,
+        }
+    });
 }

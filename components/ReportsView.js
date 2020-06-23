@@ -1,5 +1,6 @@
 import React from "react";
 import {Text, ScrollView, TouchableOpacity, View, StyleSheet, ActivityIndicator} from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 class ReportsView extends React.Component {
@@ -14,7 +15,15 @@ class ReportsView extends React.Component {
         this.props.initReports({
             dateStart: lastDate.toISOString().split("T")[0],
             dateEnd: new Date().toISOString().split("T")[0],
-        }, this.props.user.currentUser.token)
+        }, this.props.user.currentUser.token);
+        try {
+            (async () => {
+                const location = await AsyncStorage.getItem('@location')
+                this.props.changeLocation(JSON.parse(location));
+            })();
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {

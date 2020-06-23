@@ -2,7 +2,6 @@ import React from "react";
 import {Text, TouchableOpacity, View, StyleSheet, ActivityIndicator, TextInput, ScrollView} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import RNPickerSelect from 'react-native-picker-select';
-import {saveReport} from "../routes/reportDetailsRoutes";
 
 
 class ReportFormView extends React.Component {
@@ -11,7 +10,6 @@ class ReportFormView extends React.Component {
         feature: null,
         task: null,
         detailedTask: null,
-        location: null,
         factor: null,
         hours: "0",
         workUnits: "0",
@@ -73,14 +71,6 @@ class ReportFormView extends React.Component {
         }
     }
 
-    onChooseLocation = (value) => {
-        if(value !== null) {
-            this.setState({
-                location: value,
-            })
-        }
-    }
-
     onChooseFactor = (value) => {
         if(value !== null) {
             this.setState({
@@ -116,10 +106,10 @@ class ReportFormView extends React.Component {
             this.setState({message: "Task not selected!"})
         } else if(this.state.detailedTask === null) {
             this.setState({message: "Detailed task not selected!"})
-        } else if(this.state.location === null) {
-            this.setState({message: "Location task not selected!"})
+        } else if(this.props.user.location === null) {
+            this.setState({message: "Location not selected!"})
         } else if(this.state.factor === null) {
-            this.setState({message: "Factor task not selected!"})
+            this.setState({message: "Factor not selected!"})
         } else {
             const report = {
                 project: this.props.reportsData.projects
@@ -130,8 +120,7 @@ class ReportFormView extends React.Component {
                     .find(task => task.taskId === +this.state.task),
                 detailedTask: this.props.reportsData.detailedTasks
                     .find(detailedTask => detailedTask.detailedTaskId === +this.state.detailedTask),
-                location: this.props.reportsData.locations
-                    .find(location => location.locationId === +this.state.location),
+                location: this.props.user.location,
                 factor: this.props.reportsData.factors
                     .find(factor => factor.factorId === +this.state.factor),
                 hours: +this.state.hours,
@@ -246,20 +235,6 @@ class ReportFormView extends React.Component {
                             style={styles.inputField}
                             value={this.state.workUnits}
                             onChange={text => this.onChangeWorkUnits(text)}
-                        />
-                    </View>
-                    <View style={styles.selectItem}>
-                        <RNPickerSelect
-                            onValueChange={(value) => {this.onChooseLocation(value)}}
-                            placeholder={{label: "Select a location...", value: null}}
-                            style={{placeholder: {color: "black"}}}
-                            items={this.props.reportsData.locations
-                                    .map(location => {
-                                        return {
-                                            label: location.locationName,
-                                            value: location.locationId,
-                                        }
-                                    })}
                         />
                     </View>
                     <View style={styles.selectItem}>

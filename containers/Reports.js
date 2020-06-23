@@ -2,6 +2,7 @@ import React from "react";
 import {connect} from "react-redux"
 import ReportsView from "../components/ReportsView";
 import {initReports} from "../actions/reportsActions";
+import {changeLocation} from "../actions/usersActions";
 
 function Reports(props) {
     return (
@@ -10,6 +11,7 @@ function Reports(props) {
             user={props.user}
             reports={props.reports}
             initReports={props.initReports}
+            changeLocation={props.changeLocation}
         />
     )
 }
@@ -24,6 +26,7 @@ const mapStateToProps = store => {
 const mapFuncToProps = dispatch => {
     return {
         initReports: (date, token) => dispatch(initReports(date, token)),
+        changeLocation: (location) => dispatch(changeLocation(location)),
     }
 };
 
