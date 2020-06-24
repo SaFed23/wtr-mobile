@@ -136,18 +136,18 @@ class ReportFormView extends React.Component {
     render() {
         return (
             <>
-                <TouchableOpacity style={styles.buttonBack}
-                                  onPress={() => {this.props.navigation.goBack()}}>
-                    <View style={{flexDirection: "row"}}>
-                        <Icon name={"angle-left"} size={30}/>
-                        <Text style={{fontSize: 23, marginLeft: "5%"}}>Back</Text>
-                    </View>
-                </TouchableOpacity>
-                <View style={{flexDirection: "row", justifyContent: "center"}}>
-                    <Text style={{fontSize: 23}}>
-                        Report for {this.props.params.date}
-                    </Text>
-                </View>
+                {/*<TouchableOpacity style={styles.buttonBack}*/}
+                {/*                  onPress={() => {this.props.navigation.goBack()}}>*/}
+                {/*    <View style={{flexDirection: "row"}}>*/}
+                {/*        <Icon name={"angle-left"} size={30}/>*/}
+                {/*        <Text style={{fontSize: 23, marginLeft: "5%"}}>Back</Text>*/}
+                {/*    </View>*/}
+                {/*</TouchableOpacity>*/}
+                {/*<View style={{flexDirection: "row", justifyContent: "center"}}>*/}
+                {/*    <Text style={{fontSize: 23}}>*/}
+                {/*        Report for {this.props.params.date}*/}
+                {/*    </Text>*/}
+                {/*</View>*/}
                 <View style={[styles.container, styles.horizontal]}>
                     <ActivityIndicator size="large"
                                        color="lightblue"

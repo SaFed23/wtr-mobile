@@ -38,8 +38,16 @@ class ReportsView extends React.Component {
                 .filter(report => report.status !== "PRIVATE" && report.status !== "REJECTED")
                 .map(report => report.reportDetailsDate)
             while (lastDate < new Date()) {
-                if(!arrayOfDatesWithReport.includes(lastDate.toISOString().split("T")[0])){
-                    arrayOfDates.push(lastDate.toISOString().split("T")[0])
+                let stringOfDate = lastDate.toISOString().split("T")[0];
+                if(!arrayOfDatesWithReport.includes(stringOfDate)){
+                    arrayOfDates.push(
+                        {
+                            date: stringOfDate,
+                            reports: this.props.reports.reports
+                                .filter(report =>
+                                    (report.status === "PRIVATE" || report.status === "REJECTED")
+                                    && report.reportDetailsDate === stringOfDate)
+                        })
                 }
                 lastDate.setDate(lastDate.getDate() + 1);
             }
@@ -67,8 +75,19 @@ class ReportsView extends React.Component {
 
     onPressDate = (index) => {
         this.props.navigation.navigate('ReportForm', {
-            date: this.state.arrayOfDates[index],
+            date: this.state.arrayOfDates[index].date,
+            reports: this.state.arrayOfDates[index].reports,
         });
+    }
+
+    setColor = (reports) => {
+        let color = "";
+        if (reports.length === 0) {
+            color = "#bd1010";
+        } else {
+            color = "#e0a601";
+        }
+        return color;
     }
 
     render() {
@@ -93,10 +112,10 @@ class ReportsView extends React.Component {
                         return <TouchableOpacity
                             key={index}
                             onPress={this.onPressDate.bind(this, index)}
-                            style={styles.buttonWithDate}>
+                            style={[styles.buttonWithDate, { backgroundColor: this.setColor(date.reports)}]}>
                             <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                                 <Text style={styles.date}>
-                                    {date}
+                                    {date.date}
                                 </Text>
                                 <View style={{marginTop: "8%", marginRight: "3%"}}>
                                     <Icon name={"angle-right"} size={40} color={"white"}/>
@@ -126,7 +145,7 @@ const styles = StyleSheet.create({
         width: 380,
         height: 100,
         borderRadius: 20,
-        backgroundColor: "#249aff"}
+    }
 });
 
 export default ReportsView;

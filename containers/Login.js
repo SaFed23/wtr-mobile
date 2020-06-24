@@ -4,7 +4,6 @@ import LoginView from "../components/LoginView";
 import {userAuthorization} from "../actions/usersActions";
 
 function Login(props) {
-    console.log(props.user)
     return (
         <LoginView
             navigation={props.navigation}
