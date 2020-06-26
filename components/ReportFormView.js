@@ -30,6 +30,12 @@ class ReportFormView extends React.Component {
                 <ScrollView>
                     {Object.keys(this.state.currentReport).length !== 0 ? (
                         <View style={{flexDirection: "column", justifyContent: "center"}}>
+                            <View style={{marginLeft: "5%", marginTop: "3%"}}>
+                                <Text style={{fontSize: 14, color: "#616161"}}>
+                                    Status: {this.props.arrWithReports[this.props.currentReport].method === "POST"
+                                    ? "NEW" : this.props.arrWithReports[this.props.currentReport].report.status}
+                                </Text>
+                            </View>
                             <View style={{borderBottomWidth: 1, marginLeft: "5%", marginRight: "5%", borderColor: "lightblue"}}>
                                     <Picker
                                         selectedValue={this.state.currentReport.project === null ? null
