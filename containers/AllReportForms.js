@@ -5,15 +5,16 @@ import {
     getReportsDataAction
 } from "../actions/reportsDataActions";
 import {saveReportAction} from "../actions/reportsActions";
+import AllReportFormsView from "../components/AllReportFormsView";
 
-function ReportForm (props) {
+function AllReportForms (props) {
     return (
-        <ReportFormView
+        <AllReportFormsView
             navigation={props.navigation}
-            params={props.route.params}
+            date={props.route.params.date}
+            reports={props.route.params.reports}
             user={props.user}
             reportsData={props.reportsData}
-            reports={props.reports}
             getReportsData={props.getReportsData}
             saveReport={props.saveReport}
         />
@@ -35,4 +36,4 @@ const mapFuncToProps = dispatch => {
     }
 };
 
-export default connect(mapStateToProps, mapFuncToProps)(ReportForm);
+export default connect(mapStateToProps, mapFuncToProps)(AllReportForms);

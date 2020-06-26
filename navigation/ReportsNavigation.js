@@ -1,8 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import Reports from "../containers/Reports";
 import React from "react";
-import ReportForm from "../containers/ReportForm";
-import AllReportFormsView from "../components/AllReportFormsView";
+import AllReportForms from "../containers/AllReportForms";
 
 const Stack = createStackNavigator();
 
@@ -14,7 +13,7 @@ function ReportsNavigation() {
                 component={Reports}/>
             <Stack.Screen
                 name="ReportForm"
-                component={AllReportFormsView}/>
+                component={AllReportForms}/>
         </Stack.Navigator>
     )
 }

@@ -1,289 +1,179 @@
 import React from "react";
 import {Text, TouchableOpacity, View, StyleSheet, ActivityIndicator, TextInput, ScrollView} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import RNPickerSelect from 'react-native-picker-select';
+import {Picker} from '@react-native-community/picker';
 
 
 class ReportFormView extends React.Component {
     state = {
-        project: null,
-        feature: null,
-        task: null,
-        detailedTask: null,
-        factor: null,
-        hours: "0",
-        workUnits: "0",
-        comments: "",
-        message: "",
+        currentReport: {},
     }
 
     componentDidMount() {
-        this.props.getReportsData(this.props.user.currentUser.token);
-        if(new Date(this.props.params.date).getDay() !== 0
-            && new Date(this.props.params.date).getDay() !== 6){
-            this.setState({
-                hours: "8",
-            })
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if(this.props.reports.reports.length !== prevProps.reports.reports.length){
-            this.props.navigation.goBack();
-        }
-    }
-
-    onChooseProject = (value) => {
-        if(value !== null) {
-            this.setState({
-                project: value,
-                feature: null,
-                task: null,
-                detailedTask: null,
-            })
-        }
-    }
-
-    onChooseFeature = (value) => {
-        if(value !== null) {
-            this.setState({
-                feature: value,
-                task: null,
-                detailedTask: null,
-            })
-        }
-    }
-
-    onChooseTask = (value) => {
-        if(value !== null) {
-            this.setState({
-                task: value,
-                detailedTask: null,
-            })
-        }
-    }
-
-    onChooseDetailedTask = (value) => {
-        if(value !== null) {
-            this.setState({
-                detailedTask: value,
-            })
-        }
-    }
-
-    onChooseFactor = (value) => {
-        if(value !== null) {
-            this.setState({
-                factor: value,
-            })
-        }
-    }
-
-    onChangeHours = text => {
         this.setState({
-            hours: text.nativeEvent.text,
+            currentReport: this.props.arrWithReports[this.props.currentReport].report,
         });
     }
 
-    onChangeWorkUnits = text => {
-        this.setState({
-            workUnits: text.nativeEvent.text,
-        })
-    }
-
-    onChangeComments = text => {
-        this.setState({
-            comments: text.nativeEvent.text,
-        })
-    }
-
-    onSubmit = (status) => {
-        if(this.state.project === null) {
-            this.setState({message: "Project not selected!"})
-        } else if(this.state.feature === null) {
-            this.setState({message: "Feature not selected!"})
-        } else if(this.state.task === null) {
-            this.setState({message: "Task not selected!"})
-        } else if(this.state.detailedTask === null) {
-            this.setState({message: "Detailed task not selected!"})
-        } else if(this.props.user.location === null) {
-            this.setState({message: "Location not selected!"})
-        } else if(this.state.factor === null) {
-            this.setState({message: "Factor not selected!"})
-        } else {
-            const report = {
-                project: this.props.reportsData.projects
-                    .find(project => project.projectId === +this.state.project),
-                feature: this.props.reportsData.features
-                    .find(feature => feature.featureId === +this.state.feature),
-                task: this.props.reportsData.tasks
-                    .find(task => task.taskId === +this.state.task),
-                detailedTask: this.props.reportsData.detailedTasks
-                    .find(detailedTask => detailedTask.detailedTaskId === +this.state.detailedTask),
-                location: this.props.user.location,
-                factor: this.props.reportsData.factors
-                    .find(factor => factor.factorId === +this.state.factor),
-                hours: +this.state.hours,
-                workUnits: +this.state.workUnits,
-                comments: this.state.comments,
-                reportDetailsDate: this.props.params.date,
-                status
-            };
-            this.props.saveReport(report, this.props.reports.reports, this.props.user.currentUser.token);
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(this.props.currentReport !== prevProps.currentReport) {
+            this.setState({
+                currentReport: this.props.arrWithReports[this.props.currentReport].report,
+            });
         }
     }
 
     render() {
+        console.log("Current Report: ", this.state.currentReport);
         return (
             <>
-                {/*<TouchableOpacity style={styles.buttonBack}*/}
-                {/*                  onPress={() => {this.props.navigation.goBack()}}>*/}
-                {/*    <View style={{flexDirection: "row"}}>*/}
-                {/*        <Icon name={"angle-left"} size={30}/>*/}
-                {/*        <Text style={{fontSize: 23, marginLeft: "5%"}}>Back</Text>*/}
-                {/*    </View>*/}
-                {/*</TouchableOpacity>*/}
-                {/*<View style={{flexDirection: "row", justifyContent: "center"}}>*/}
-                {/*    <Text style={{fontSize: 23}}>*/}
-                {/*        Report for {this.props.params.date}*/}
-                {/*    </Text>*/}
-                {/*</View>*/}
-                <View style={[styles.container, styles.horizontal]}>
-                    <ActivityIndicator size="large"
-                                       color="lightblue"
-                                       animating={this.props.reportsData.loading}/>
-                </View>
                 <ScrollView>
-                <View style={{flexDirection: "column", justifyContent: "center"}}>
-                    <View style={{borderBottomWidth: 1, marginLeft: "5%", marginRight: "5%", borderColor: "lightblue"}}>
-                        <RNPickerSelect
-                            default
-                            onValueChange={(value) => {this.onChooseProject(value)}}
-                            placeholder={{label: "Select a project...", value: null}}
-                            style={{placeholder: {color: "black"}}}
-                            items={this.props.reportsData.projects.map(project => {
-                                return {
-                                    label: project.projectName,
-                                    value: project.projectId,
-                                }
-                            })}
-                        />
-                    </View>
-                    <View style={styles.selectItem}>
-                        <RNPickerSelect
-                            onValueChange={(value) => {this.onChooseFeature(value)}}
-                            placeholder={{label: "Select a feature...", value: null}}
-                            style={{placeholder: {color: "black"}}}
-                            items={this.state.project === null ? [] :
-                                this.props.reportsData.features
-                                    .filter(feature => feature.projectId === this.state.project)
-                                    .map(feature => {
-                                        return {
-                                            label: feature.featureName,
-                                            value: feature.featureId,
-                                        }
+                    {Object.keys(this.state.currentReport).length !== 0 ? (
+                        <View style={{flexDirection: "column", justifyContent: "center"}}>
+                            <View style={{borderBottomWidth: 1, marginLeft: "5%", marginRight: "5%", borderColor: "lightblue"}}>
+                                    <Picker
+                                        selectedValue={this.state.currentReport.project === null ? null
+                                            : this.state.currentReport.project.projectId}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            this.props.onChooseProject(itemValue)
+                                        }>
+                                        <Picker.Item label="Select a project..." value={null} />
+                                        {this.props.reportsData.projects.map(project => {
+                                            return <Picker.Item
+                                                key={project.projectId}
+                                                label={project.projectName}
+                                                value={project.projectId} />
+                                        })}
+                                    </Picker>
+                            </View>
+                            <View style={styles.selectItem}>
+                                <Picker
+                                    selectedValue={this.state.currentReport.feature === null ? null
+                                        : this.state.currentReport.feature.featureId}
+                                    onValueChange={(itemValue, itemIndex) =>
+                                        this.props.onChooseFeature(itemValue)
+                                    }>
+                                    <Picker.Item label="Select a feature..." value={null} />
+                                    {this.state.currentReport.project === null ? [] :
+                                        this.props.reportsData.features
+                                            .filter(feature =>
+                                                feature.projectId === this.state.currentReport.project.projectId)
+                                            .map(feature => {
+                                                return <Picker.Item
+                                                    key={feature.featureId}
+                                                    label={feature.featureName}
+                                                    value={feature.featureId}/>
                                     })}
-                        />
-                    </View>
-                    <View style={styles.selectItem}>
-                        <RNPickerSelect
-                            onValueChange={(value) => {this.onChooseTask(value)}}
-                            placeholder={{label: "Select a task...", value: null}}
-                            style={{placeholder: {color: "black"}}}
-                            items={this.state.feature === null ? [] :
-                                this.props.reportsData.tasks
-                                    .filter(task => task.featureId === this.state.feature)
-                                    .map(task => {
-                                        return {
-                                            label: task.taskName,
-                                            value: task.taskId,
-                                        }
-                                    })}
-                        />
-                    </View>
-                    <View style={styles.selectItem}>
-                        <RNPickerSelect
-                            onValueChange={(value) => {this.onChooseDetailedTask(value)}}
-                            placeholder={{label: "Select a detailed task...", value: null}}
-                            style={{placeholder: {color: "black"}}}
-                            items={this.state.task === null ? [] :
-                                this.props.reportsData.detailedTasks
-                                    .filter(detailedTask => detailedTask.taskId === this.state.task)
-                                    .map(detailedTask => {
-                                        return {
-                                            label: detailedTask.detailedTaskName,
-                                            value: detailedTask.detailedTaskId,
-                                        }
-                                    })}
-                        />
-                    </View>
-                    <View style={styles.blockWithHours}>
-                        <Text style={[styles.text, {marginLeft: "15%"}]}>
-                            Hours
-                        </Text>
-                        <Text style={[styles.text, {marginRight: "15%"}]}>
-                            Work Units
-                        </Text>
-                    </View>
-                    <View style={{flexDirection: "row", justifyContent: "space-between", marginLeft: "5%", marginRight: "5%"}}>
-                        <TextInput
-                            style={styles.inputField}
-                            value={this.state.hours}
-                            onChange={text => this.onChangeHours(text)}
-                        />
-                        <TextInput
-                            style={styles.inputField}
-                            value={this.state.workUnits}
-                            onChange={text => this.onChangeWorkUnits(text)}
-                        />
-                    </View>
-                    <View style={styles.selectItem}>
-                        <RNPickerSelect
-                            onValueChange={(value) => {this.onChooseFactor(value)}}
-                            placeholder={{label: "Select a factor...", value: null}}
-                            style={{placeholder: {color: "black"}}}
-                            items={this.props.reportsData.factors
-                                .map(factor => {
-                                    return {
-                                        label: factor.factorName,
-                                        value: factor.factorId,
-                                    }
-                                })}
-                        />
-                    </View>
-                    <View style={styles.commentsView}>
-                        <Text style={styles.text}>
-                            Comments
-                        </Text>
-                    </View>
-                    <View style={styles.commentsView}>
-                        <TextInput
-                            style={styles.inputCommentsField}
-                            multiline={true}
-                            value={this.state.comments}
-                            onChange={text => this.onChangeComments(text)}
-                        />
-                    </View>
-                    <View style={{flexDirection: "row", justifyContent: "center"}}>
-                        <Text style={{color: "red"}}>
-                            {this.state.message}
-                        </Text>
-                    </View>
-                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: "7%"}}>
-                        <TouchableOpacity
-                            style={[styles.button, {backgroundColor: "lightgreen"}]}
-                            onPress={this.onSubmit.bind(this, "REGISTERED")}
-                        >
-                            <Text style={{fontSize: 20, marginTop: "5%"}}>Submit</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[styles.button, {backgroundColor: "lightgray"}]}
-                            onPress={this.onSubmit.bind(this, "PRIVATE")}
-                        >
-                            <Text style={{fontSize: 20, marginTop: "5%"}}>Submit as private</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                                </Picker>
+                            </View>
+                            <View style={styles.selectItem}>
+                                <Picker
+                                    selectedValue={this.state.currentReport.task === null ? null
+                                        : this.state.currentReport.task.taskId}
+                                    onValueChange={(itemValue, itemIndex) =>
+                                        this.props.onChooseTask(itemValue)
+                                    }>
+                                    <Picker.Item label="Select a task..." value={null} />
+                                    {this.state.currentReport.feature === null ? [] :
+                                        this.props.reportsData.tasks
+                                            .filter(task =>
+                                                task.featureId === this.state.currentReport.feature.featureId)
+                                            .map(task => {
+                                                return <Picker.Item
+                                                    key={task.taskId}
+                                                    label={task.taskName}
+                                                    value={task.taskId}/>
+                                            })}
+                                </Picker>
+                            </View>
+                            <View style={styles.selectItem}>
+                                <Picker
+                                    selectedValue={this.state.currentReport.detailedTask === null ? null
+                                        : this.state.currentReport.detailedTask.detailedTaskId}
+                                    onValueChange={(itemValue, itemIndex) =>
+                                        this.props.onChooseDetailedTask(itemValue)
+                                    }>
+                                    <Picker.Item label="Select a detailed task..." value={null} />
+                                    {this.state.currentReport.task === null ? [] :
+                                        this.props.reportsData.detailedTasks
+                                            .filter(detailedTask =>
+                                                detailedTask.taskId === this.state.currentReport.task.taskId)
+                                            .map(detailedTask => {
+                                                return <Picker.Item
+                                                    key={detailedTask.detailedTaskId}
+                                                    label={detailedTask.detailedTaskName}
+                                                    value={detailedTask.detailedTaskId}/>
+                                            })}
+                                </Picker>
+                            </View>
+                            <View style={styles.blockWithHours}>
+                                <Text style={[styles.text, {marginLeft: "15%"}]}>
+                                    Hours
+                                </Text>
+                                <Text style={[styles.text, {marginRight: "15%"}]}>
+                                    Work Units
+                                </Text>
+                            </View>
+                            <View style={{flexDirection: "row", justifyContent: "space-between", marginLeft: "5%", marginRight: "5%"}}>
+                                <TextInput
+                                    style={styles.inputField}
+                                    value={this.props.arrWithReports[this.props.currentReport].report.hours.toString()}
+                                    onChange={text => this.props.onChangeHours(text)}
+                                />
+                                <TextInput
+                                    style={styles.inputField}
+                                    value={this.props.arrWithReports[this.props.currentReport].report.workUnits.toString()}
+                                    onChange={text => this.props.onChangeWorkUnits(text)}
+                                />
+                            </View>
+                            <View style={styles.selectItem}>
+                                <Picker
+                                    selectedValue={this.state.currentReport.factor === null ? null
+                                        : this.state.currentReport.factor.factorId}
+                                    onValueChange={(itemValue, itemIndex) =>
+                                        this.props.onChooseFactor(itemValue)
+                                    }>
+                                    <Picker.Item label="Select a factor..." value={null} />
+                                    {this.props.reportsData.factors
+                                            .map(factor => {
+                                                return <Picker.Item
+                                                    key={factor.factorId}
+                                                    label={factor.factorName}
+                                                    value={factor.factorId}/>
+                                            })}
+                                </Picker>
+                            </View>
+                            <View style={styles.commentsView}>
+                                <Text style={styles.text}>
+                                    Comments
+                                </Text>
+                            </View>
+                            <View style={styles.commentsView}>
+                                <TextInput
+                                    style={styles.inputCommentsField}
+                                    multiline={true}
+                                    value={this.props.arrWithReports[this.props.currentReport].report.comments}
+                                    onChange={text => this.props.onChangeComments(text)}
+                                />
+                            </View>
+                            <View style={{flexDirection: "row", justifyContent: "center"}}>
+                                <Text style={{color: "red"}}>
+                                    {this.props.message}
+                                </Text>
+                            </View>
+                            <View style={{flexDirection: "row", justifyContent: "center"}}>
+                                <TouchableOpacity
+                                    style={[styles.button,
+                                        {backgroundColor: this.props.arrWithReports.length === 1 ? "rgba(255,0,0,0.29)" : "red"}
+                                        ]}
+                                    onPress={this.props.onDeleteReport}
+                                    disabled={this.props.arrWithReports.length === 1}
+                                >
+                                    <Text style={{fontSize: 20, marginTop: "5%"}}>Delete</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    ) : <Text/>}
                 </ScrollView>
             </>
         );

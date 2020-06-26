@@ -2,11 +2,42 @@ import React from "react";
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import ReportFormView from "./ReportFormView";
 
 class AllReportFormsView extends React.Component {
     state = {
-        arrWithReports: [1, 1],
+        arrWithReports: [],
         currentReport: 0,
+        message: "",
+    }
+
+    componentDidMount() {
+        this.props.getReportsData(this.props.user.currentUser.token);
+        const reports = this.props.reports;
+        if(reports.length === 0) {
+            let hours = 0;
+            if(new Date(this.props.date).getDay() !== 0
+                && new Date(this.props.date).getDay() !== 6){
+                hours = 8;
+            }
+            this.setState({
+                arrWithReports: [{method: "POST", report: {
+                        project: null,
+                        feature: null,
+                        task: null,
+                        detailedTask: null,
+                        factor: null,
+                        hours: hours,
+                        workUnits: "0",
+                        comments: "",
+                        message: "",
+                    }}],
+            });
+        } else {
+            this.setState({
+                arrWithReports: reports.map(report => {return {method: "PUT", report}}),
+            });
+        }
     }
 
     onSwipeLeft = () => {
@@ -25,6 +56,179 @@ class AllReportFormsView extends React.Component {
         }
     }
 
+    onAddReport = () => {
+        let hours = 0;
+        if(new Date(this.props.date).getDay() !== 0
+            && new Date(this.props.date).getDay() !== 6){
+            hours = 8;
+        }
+        this.setState({
+            arrWithReports: [...this.state.arrWithReports,
+                {method: "POST", report: {
+                        project: null,
+                        feature: null,
+                        task: null,
+                        detailedTask: null,
+                        factor: null,
+                        hours: hours,
+                        workUnits: "0",
+                        comments: "",
+                        message: "",
+                    }}],
+        })
+    }
+
+    onDeleteReport = () => {
+        this.setState({
+            arrWithReports: this.state.arrWithReports
+                .filter((report, index) => index !== this.state.currentReport),
+            currentReport: this.state.currentReport !== 0 ? this.state.currentReport - 1 : this.state.currentReport,
+        })
+    }
+
+    setReportInState = report => {
+        const updatedArr = this.state.arrWithReports;
+        updatedArr[this.state.currentReport] = report;
+        this.setState({
+            arrWithReports: updatedArr,
+        });
+    }
+
+    onChooseProject = (value) => {
+        const report = this.state.arrWithReports[this.state.currentReport];
+        report.report.project = this.props.reportsData.projects
+            .find(project => project.projectId === +value);
+        report.report.feature = null;
+        report.report.task = null;
+        report.report.detailedTask = null;
+        this.setReportInState(report);
+    }
+
+    onChooseFeature = (value) => {
+        const report = this.state.arrWithReports[this.state.currentReport];
+        report.report.feature = this.props.reportsData.features
+            .find(feature => feature.featureId === +value);
+        report.report.task = null;
+        report.report.detailedTask = null;
+        this.setReportInState(report)
+    }
+
+    onChooseTask = (value) => {
+        const report = this.state.arrWithReports[this.state.currentReport];
+        report.report.task = this.props.reportsData.tasks
+            .find(task => task.taskId === +value);
+        report.report.detailedTask = null;
+        this.setReportInState(report)
+    }
+
+    onChooseDetailedTask = (value) => {
+        const report = this.state.arrWithReports[this.state.currentReport];
+        report.report.detailedTask = this.props.reportsData.detailedTasks
+            .find(detailedTask => detailedTask.detailedTaskId === +value);
+        this.setReportInState(report)
+    }
+
+    onChooseFactor = (value) => {
+        const report = this.state.arrWithReports[this.state.currentReport];
+        report.report.factor = this.props.reportsData.factors
+            .find(factor => factor.factorId === +value);
+        this.setReportInState(report)
+    }
+
+    onChangeHours = text => {
+        const updatedArr = this.state.arrWithReports;
+        const report = this.state.arrWithReports[this.state.currentReport];
+        report.report.hours = text.nativeEvent.text;
+        updatedArr[this.state.currentReport] = report;
+        this.setState({
+            arrWithReports: updatedArr,
+        });
+    }
+
+    onChangeWorkUnits = text => {
+        const updatedArr = this.state.arrWithReports;
+        const report = this.state.arrWithReports[this.state.currentReport];
+        report.report.workUnits = text.nativeEvent.text;
+        updatedArr[this.state.currentReport] = report;
+        this.setState({
+            arrWithReports: updatedArr,
+        });
+    }
+
+    onChangeComments = text => {
+        const updatedArr = this.state.arrWithReports;
+        updatedArr[this.state.currentReport].report.comments = text.nativeEvent.text;
+        this.setState({
+            arrWithReports: updatedArr,
+        });
+    }
+
+    onSubmit = (status) => {
+        let index = this.state.arrWithReports.findIndex(report => {
+            return (
+                report.report.project === null ||
+                report.report.feature === null ||
+                report.report.task === null ||
+                report.report.detailedTask === null ||
+                report.report.factor === null
+            )
+        });
+        index = this.state.arrWithReports.findIndex(report => {
+            return (
+                this.props.user.location === null
+            )
+        });
+        if(index !== -1) {
+            this.setState({message: `Select a location in your account settingsS`})
+        } else {
+            index = this.state.arrWithReports.findIndex(report => {
+                return (
+                    report.report.project === null ||
+                    report.report.feature === null ||
+                    report.report.task === null ||
+                    report.report.detailedTask === null ||
+                    report.report.factor === null
+                )
+            });
+            if(index !== - 1) {
+                this.setState({message: `Something is wrong in the ${index + 1} report!`})
+            }
+        }
+        // if(this.state.project === null) {
+        //     this.setState({message: "Project not selected!"})
+        // } else if(this.state.feature === null) {
+        //     this.setState({message: "Feature not selected!"})
+        // } else if(this.state.task === null) {
+        //     this.setState({message: "Task not selected!"})
+        // } else if(this.state.detailedTask === null) {
+        //     this.setState({message: "Detailed task not selected!"})
+        // } else if(this.props.user.location === null) {
+        //     this.setState({message: "Location not selected!"})
+        // } else if(this.state.factor === null) {
+        //     this.setState({message: "Factor not selected!"})
+        // } else {
+        //     const report = {
+        //         project: this.props.reportsData.projects
+        //             .find(project => project.projectId === +this.state.project),
+        //         feature: this.props.reportsData.features
+        //             .find(feature => feature.featureId === +this.state.feature),
+        //         task: this.props.reportsData.tasks
+        //             .find(task => task.taskId === +this.state.task),
+        //         detailedTask: this.props.reportsData.detailedTasks
+        //             .find(detailedTask => detailedTask.detailedTaskId === +this.state.detailedTask),
+        //         location: this.props.user.location,
+        //         factor: this.props.reportsData.factors
+        //             .find(factor => factor.factorId === +this.state.factor),
+        //         hours: +this.state.hours,
+        //         workUnits: +this.state.workUnits,
+        //         comments: this.state.comments,
+        //         reportDetailsDate: this.props.params.date,
+        //         status
+        //     };
+        //     this.props.saveReport(report, this.props.reports.reports, this.props.user.currentUser.token);
+        // }
+    }
+
     render() {
         const config = {
             velocityThreshold: 0.3,
@@ -41,7 +245,7 @@ class AllReportFormsView extends React.Component {
                 </TouchableOpacity>
                 <View style={{flexDirection: "row", justifyContent: "center"}}>
                     <Text style={{fontSize: 23}}>
-                        Report for {this.props.route.params.date}
+                        Report for {this.props.date}
                     </Text>
                 </View>
                 <View style={{flexDirection: "row", justifyContent: "space-between"}}>
@@ -56,19 +260,9 @@ class AllReportFormsView extends React.Component {
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.buttonActionWithReports, {backgroundColor: "green"}]}
-                                      onPress={() => {}}>
+                                      onPress={this.onAddReport}>
                         <View style={{flexDirection: "row", justifyContent: "center"}}>
                             <Text style={{fontSize: 18, color: "white"}}>Add report</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[styles.buttonActionWithReports,
-                            { backgroundColor: this.state.arrWithReports.length === 1 ? "rgba(255,0,0,0.29)" : "red"}]}
-                        onPress={() => {}}
-                        disabled={this.state.arrWithReports.length === 1}
-                    >
-                        <View style={{flexDirection: "row", justifyContent: "center"}}>
-                            <Text style={{fontSize: 18, color: "white"}}>Delete report</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity style={{ marginTop: "2%", width: "5%"}}
@@ -86,18 +280,38 @@ class AllReportFormsView extends React.Component {
                     onSwipeLeft={(state) => this.onSwipeLeft(state)}
                     onSwipeRight={(state) => this.onSwipeRight(state)}
                     config={config}
-                    style={{backgroundColor: "yellow", height: "70%"}}
+                    style={{height: "70%"}}
                 >
-                    <Text>{this.state.currentReport}</Text>
+                    {this.state.arrWithReports.length ? (
+                        <>
+                        <ReportFormView
+                            arrWithReports={this.state.arrWithReports}
+                            currentReport={this.state.currentReport}
+                            date={this.props.date}
+                            reportsData={this.props.reportsData}
+                            message={this.state.message}
+                            onDeleteReport={this.onDeleteReport}
+                            onChooseProject={this.onChooseProject}
+                            onChooseFeature={this.onChooseFeature}
+                            onChooseTask={this.onChooseTask}
+                            onChooseDetailedTask={this.onChooseDetailedTask}
+                            onChooseFactor={this.onChooseFactor}
+                            onChangeHours={this.onChangeHours}
+                            onChangeWorkUnits={this.onChangeWorkUnits}
+                            onChangeComments={this.onChangeComments}
+                        />
+                        </>) : <Text>""</Text>}
                 </GestureRecognizer>
                 <View style={{flexDirection: "row", justifyContent: "center", marginTop: "7%"}}>
                     <TouchableOpacity
                         style={[styles.button, {backgroundColor: "lightgreen"}]}
+                        onPress={this.onSubmit.bind(this, "REGISTERED")}
                     >
                         <Text style={{fontSize: 20, marginTop: "5%"}}>Submit</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={[styles.button, {backgroundColor: "lightgray"}]}
+                        onPress={this.onSubmit.bind(this, "PRIVATE")}
                     >
                         <Text style={{fontSize: 20, marginTop: "5%"}}>Submit as private</Text>
                     </TouchableOpacity>

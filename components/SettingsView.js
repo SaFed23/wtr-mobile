@@ -2,6 +2,7 @@ import React from "react";
 import {ScrollView, Text, View} from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import AsyncStorage from "@react-native-community/async-storage";
+import {Picker} from '@react-native-community/picker';
 import {getLocations} from "../routes/reportsDataRoutes";
 
 class SettingsView extends React.Component {
@@ -42,37 +43,21 @@ class SettingsView extends React.Component {
                             </Text>
                         </View>
                         <View style={{borderBottomWidth: 1, marginLeft: "5%", marginRight: "5%", borderColor: "lightblue"}}>
-                            <RNPickerSelect
-                                default
-                                onValueChange={(value) => {this.onChooseLocation(value)}}
-                                placeholder={(() => {
-                                    if(this.props.user.location === null){
-                                        return {
-                                            label: "Select a location...",
-                                            value: null
-                                        }
-                                    } else {
-                                        return {
-                                            label: this.props.user.location.locationName,
-                                            value: this.props.user.location.locationId,
-                                        }
-                                    }
-                                })()}
-                                style={{placeholder: {color: "black"}}}
-                                items={this.state.locations
-                                    .filter(location => {
-                                        if(this.props.user.location !== null)
-                                            return location.locationId !== this.props.user.location.locationId
-                                        else
-                                            return location
-                                    })
+                            <Picker
+                                selectedValue={this.props.user.location === null ? null
+                                    : this.props.user.location.locationId}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    this.onChooseLocation(itemValue)
+                                }>
+                                <Picker.Item label="Select a location..." value={null} />
+                                {this.state.locations
                                     .map(location => {
-                                    return {
-                                        label: location.locationName,
-                                        value: location.locationId,
-                                    }
-                                })}
-                            />
+                                        return <Picker.Item
+                                            key={location.locationId}
+                                            label={location.locationName}
+                                            value={location.locationId} />
+                                    })}
+                            </Picker>
                         </View>
                     </View>
                 </ScrollView>
