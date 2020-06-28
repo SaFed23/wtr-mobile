@@ -1,9 +1,5 @@
 import React from "react";
 import {connect} from "react-redux";
-import {
-    getReportsDataAction
-} from "../actions/reportsDataActions";
-import {saveReportAction} from "../actions/reportsActions";
 import SettingsView from "../components/SettingsView";
 import {changeLocation} from "../actions/usersActions";
 

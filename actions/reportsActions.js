@@ -34,36 +34,94 @@ export function initReports(date, token) {
     }
 }
 
-export function saveReportAction(report, reports, token) {
+export function saveReportAction(arrWithNewReports, reports, token) {
     return dispatch => {
-        saveReport({
-            comments: report.comments,
-            detailedTaskId: report.detailedTask.detailedTaskId,
-            factorId: report.factor.factorId,
-            featureId: report.feature.featureId,
-            hours: report.hours,
-            locationId: report.location.locationId,
-            projectId: report.project.projectId,
-            reportDetailsDate: report.reportDetailsDate,
-            status: report.status,
-            taskId: report.task.taskId,
-            workUnits: report.workUnits,
-        }, token)
-            .then(res => res.json())
-            .then(data => {
-                report.reportDetailsId = data.reportDetailsId;
-                const updateReports = [...reports, report];
-                dispatch({
-                    type: REPORTS_SUCCESS,
-                    payload: {
-                        reports:updateReports,
+        const arrToCreate = arrWithNewReports
+            .filter(report => report.method === "POST")
+            .map(report => {
+                return {
+                    comments: report.report.comments,
+                    detailedTaskId: report.report.detailedTask.detailedTaskId,
+                    factorId: report.report.factor.factorId,
+                    featureId: report.report.feature.featureId,
+                    hours: report.report.hours,
+                    locationId: report.report.location.locationId,
+                    projectId: report.report.project.projectId,
+                    reportDetailsDate: report.report.reportDetailsDate,
+                    status: report.report.status,
+                    taskId: report.report.task.taskId,
+                    workUnits: report.report.workUnits,
+                }
+            });
+        const arrToUpdate = arrWithNewReports
+            .filter(report => report.method === "PUT")
+            .map(report => {
+                return {
+                    comments: report.report.comments,
+                    detailedTaskId: report.report.detailedTask.detailedTaskId,
+                    factorId: report.report.factor.factorId,
+                    featureId: report.report.feature.featureId,
+                    hours: report.report.hours,
+                    locationId: report.report.location.locationId,
+                    projectId: report.report.project.projectId,
+                    reportDetailsDate: report.report.reportDetailsDate,
+                    reportDetailsId: report.report.reportDetailsId,
+                    status: report.report.status,
+                    taskId: report.report.task.taskId,
+                    workUnits: report.report.workUnits,
+                }
+            });
+        if (arrToCreate.length) {
+            saveReport("POST", arrToCreate, token)
+                .then(res => res.json())
+                .then(data => {
+                    dispatch({
+                        type: REPORTS_REQUEST,
+                        payload: {
+                            loading: true,
+                        }
+                    });
+                    const updateArr = data.map(report => {
+                        report.reportDetailsDate = report.reportDetailsDate.split("T")[0];
+                        return report;
+                    });
+                    dispatch({
+                        type: REPORTS_SUCCESS,
+                        payload: {
+                            reports: [...reports, ...updateArr],
+                            loading: false,
+                        }
+                    });
+                })
+                .catch(err => console.log("err with create: ", err.message));
+        }
+        if (arrToUpdate.length) {
+            saveReport("PUT", arrToUpdate, token)
+                .then(res => {
+                    if(res.status === 200) {
+                        dispatch({
+                            type: REPORTS_REQUEST,
+                            payload: {
+                                loading: true,
+                            }
+                        });
+                        const oldReports = [...reports]
+                            .filter(report => arrToUpdate
+                                .findIndex(val => val.reportDetailsId === report.reportDetailsId) === - 1)
+                        const newReports = arrWithNewReports
+                            .filter(report => report.method === "PUT")
+                            .map(report => report.report);
+                        dispatch({
+                            type: REPORTS_SUCCESS,
+                            payload: {
+                                reports: [...oldReports, ...newReports],
+                                loading: false,
+                            }
+                        });
                     }
                 })
-            })
-            .catch(err => {
-                dispatch({
-                    type: REPORTS_FAILED,
-                })
-            })
+                .catch(err => console.log("err with update: ", err.message));
+
+        }
     }
 }

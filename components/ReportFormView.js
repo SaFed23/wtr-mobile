@@ -1,6 +1,5 @@
 import React from "react";
 import {Text, TouchableOpacity, View, StyleSheet, ActivityIndicator, TextInput, ScrollView} from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
 import {Picker} from '@react-native-community/picker';
 
 
@@ -24,7 +23,6 @@ class ReportFormView extends React.Component {
     }
 
     render() {
-        console.log("Current Report: ", this.state.currentReport);
         return (
             <>
                 <ScrollView>
@@ -112,20 +110,18 @@ class ReportFormView extends React.Component {
                                             })}
                                 </Picker>
                             </View>
-                            <View style={styles.blockWithHours}>
-                                <Text style={[styles.text, {marginLeft: "15%"}]}>
+                            <View style={{flexDirection: "row", justifyContent: "space-between", marginLeft: "5%", marginRight: "5%"}}>
+                                <Text style={[styles.text, {marginLeft: "2%"}]}>
                                     Hours
                                 </Text>
-                                <Text style={[styles.text, {marginRight: "15%"}]}>
-                                    Work Units
-                                </Text>
-                            </View>
-                            <View style={{flexDirection: "row", justifyContent: "space-between", marginLeft: "5%", marginRight: "5%"}}>
                                 <TextInput
                                     style={styles.inputField}
                                     value={this.props.arrWithReports[this.props.currentReport].report.hours.toString()}
                                     onChange={text => this.props.onChangeHours(text)}
                                 />
+                                <Text style={[styles.text]}>
+                                    Work Units
+                                </Text>
                                 <TextInput
                                     style={styles.inputField}
                                     value={this.props.arrWithReports[this.props.currentReport].report.workUnits.toString()}
@@ -150,7 +146,7 @@ class ReportFormView extends React.Component {
                                 </Picker>
                             </View>
                             <View style={styles.commentsView}>
-                                <Text style={styles.text}>
+                                <Text style={[styles.text, {marginTop: "1%"}]}>
                                     Comments
                                 </Text>
                             </View>
@@ -175,7 +171,7 @@ class ReportFormView extends React.Component {
                                     onPress={this.props.onDeleteReport}
                                     disabled={this.props.arrWithReports.length === 1}
                                 >
-                                    <Text style={{fontSize: 20, marginTop: "5%"}}>Delete</Text>
+                                    <Text style={{fontSize: 20, marginTop: "5%", color: "white"}}>Delete</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -193,6 +189,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 17,
+        marginTop: "6%"
     },
     selectItem: {
         borderBottomWidth: 1,
@@ -201,11 +198,12 @@ const styles = StyleSheet.create({
         borderColor: "lightblue"
     },
     inputField: {
-        width: 180,
+        width: 90,
         height: 40,
         borderColor: 'lightblue',
         borderWidth: 2,
-        borderRadius: 10
+        borderRadius: 10,
+        marginTop: "4%"
     },
     inputCommentsField: {
         width: "100%",

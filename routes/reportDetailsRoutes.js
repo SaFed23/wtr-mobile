@@ -11,13 +11,13 @@ export async function getReports(date, token) {
     })).json();
 }
 
-export function saveReport(report, token) {
-    return fetch(`http://10.0.2.2:8080/user/reportDetails`, {
-        method: "POST",
+export function saveReport(method, reports, token) {
+    return fetch(`http://10.0.2.2:8080/user/reportDetails/list`, {
+        method: method,
         headers: {
             'Content-Type': 'application/json',
             "Authorization": `Bearer_${token}`,
         },
-        body: JSON.stringify(report),
+        body: JSON.stringify(reports),
     });
 }

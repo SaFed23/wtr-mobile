@@ -1,5 +1,5 @@
 import React from "react";
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import GestureRecognizer from 'react-native-swipe-gestures';
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import ReportFormView from "./ReportFormView";
@@ -12,7 +12,6 @@ class AllReportFormsView extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getReportsData(this.props.user.currentUser.token);
         const reports = this.props.reports;
         if(reports.length === 0) {
             let hours = 0;
@@ -164,15 +163,7 @@ class AllReportFormsView extends React.Component {
     }
 
     onSubmit = (status) => {
-        let index = this.state.arrWithReports.findIndex(report => {
-            return (
-                report.report.project === null ||
-                report.report.feature === null ||
-                report.report.task === null ||
-                report.report.detailedTask === null ||
-                report.report.factor === null
-            )
-        });
+        let index;
         index = this.state.arrWithReports.findIndex(report => {
             return (
                 this.props.user.location === null
@@ -192,41 +183,23 @@ class AllReportFormsView extends React.Component {
             });
             if(index !== - 1) {
                 this.setState({message: `Something is wrong in the ${index + 1} report!`})
+            } else {
+                const updatesReports = this.state.arrWithReports
+                    .reduce((acc, val) => {
+                        val.report.status = status;
+                        val.report.location = this.props.user.location;
+                        val.report.reportDetailsDate = this.props.date;
+                        acc.push(val);
+                        return acc;
+                    }, []);
+                this.props.saveReport(updatesReports,
+                    this.props.allReports.reports,
+                    this.props.user.currentUser.token);
+                this.props.navigation.navigate('Reports', {
+                    key: true,
+                })
             }
         }
-        // if(this.state.project === null) {
-        //     this.setState({message: "Project not selected!"})
-        // } else if(this.state.feature === null) {
-        //     this.setState({message: "Feature not selected!"})
-        // } else if(this.state.task === null) {
-        //     this.setState({message: "Task not selected!"})
-        // } else if(this.state.detailedTask === null) {
-        //     this.setState({message: "Detailed task not selected!"})
-        // } else if(this.props.user.location === null) {
-        //     this.setState({message: "Location not selected!"})
-        // } else if(this.state.factor === null) {
-        //     this.setState({message: "Factor not selected!"})
-        // } else {
-        //     const report = {
-        //         project: this.props.reportsData.projects
-        //             .find(project => project.projectId === +this.state.project),
-        //         feature: this.props.reportsData.features
-        //             .find(feature => feature.featureId === +this.state.feature),
-        //         task: this.props.reportsData.tasks
-        //             .find(task => task.taskId === +this.state.task),
-        //         detailedTask: this.props.reportsData.detailedTasks
-        //             .find(detailedTask => detailedTask.detailedTaskId === +this.state.detailedTask),
-        //         location: this.props.user.location,
-        //         factor: this.props.reportsData.factors
-        //             .find(factor => factor.factorId === +this.state.factor),
-        //         hours: +this.state.hours,
-        //         workUnits: +this.state.workUnits,
-        //         comments: this.state.comments,
-        //         reportDetailsDate: this.props.params.date,
-        //         status
-        //     };
-        //     this.props.saveReport(report, this.props.reports.reports, this.props.user.currentUser.token);
-        // }
     }
 
     render() {

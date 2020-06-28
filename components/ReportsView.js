@@ -11,6 +11,7 @@ class ReportsView extends React.Component {
     }
 
     componentDidMount() {
+        this.props.getReportsData(this.props.user.currentUser.token);
         const lastDate = new Date();
         lastDate.setDate(lastDate.getDate() - 28);
         this.props.initReports({
@@ -30,7 +31,7 @@ class ReportsView extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if(prevProps.reports.loading === true && this.props.reports.loading === false
             || prevState.countOfWeek !== this.state.countOfWeek
-            || this.props.reports.reports.length !== prevProps.reports.reports.length) {
+        ) {
             const lastDate = new Date();
             const arrayOfDates = [];
             lastDate.setDate(lastDate.getDate() - this.state.countOfWeek * 7 + 1);

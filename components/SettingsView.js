@@ -1,6 +1,5 @@
 import React from "react";
 import {ScrollView, Text, View} from "react-native";
-import RNPickerSelect from "react-native-picker-select";
 import AsyncStorage from "@react-native-community/async-storage";
 import {Picker} from '@react-native-community/picker';
 import {getLocations} from "../routes/reportsDataRoutes";

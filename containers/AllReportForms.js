@@ -1,9 +1,5 @@
 import React from "react";
-import ReportFormView from "../components/ReportFormView";
 import {connect} from "react-redux";
-import {
-    getReportsDataAction
-} from "../actions/reportsDataActions";
 import {saveReportAction} from "../actions/reportsActions";
 import AllReportFormsView from "../components/AllReportFormsView";
 
@@ -15,8 +11,8 @@ function AllReportForms (props) {
             reports={props.route.params.reports}
             user={props.user}
             reportsData={props.reportsData}
-            getReportsData={props.getReportsData}
             saveReport={props.saveReport}
+            allReports={props.reports}
         />
     )
 }
@@ -31,7 +27,6 @@ const mapStateToProps = store => {
 
 const mapFuncToProps = dispatch => {
     return {
-        getReportsData: (token) => dispatch(getReportsDataAction(token)),
         saveReport: (report, reports, token) => dispatch(saveReportAction(report, reports, token))
     }
 };
