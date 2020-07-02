@@ -15,7 +15,7 @@ function PagesView(props) {
                 >
                     <View style={{flexDirection: "row", justifyContent: "center"}}>
                         <View style={{flexDirection: "column", justifyContent: "center"}}>
-                            <Text style={styles.char}>-</Text>
+                                <Text style={styles.char}>-</Text>
                         </View>
                     </View>
                 </TouchableOpacity>

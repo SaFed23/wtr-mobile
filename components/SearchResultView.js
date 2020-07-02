@@ -45,8 +45,8 @@ class SearchResultView extends React.Component {
                                     <Text style={styles.date}>
                                         {date}
                                     </Text>
-                                    <View style={{marginTop: "8%", marginRight: "3%"}}>
-                                        <Icon name={"angle-right"} size={40} color={"white"}/>
+                                    <View style={{marginTop: "5%", marginRight: "3%"}}>
+                                        <Icon name={"angle-right"} size={40} color={"black"}/>
                                     </View>
                                 </View>
                             </TouchableOpacity>

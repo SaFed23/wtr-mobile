@@ -18,7 +18,12 @@
     "@react-navigation/drawer": "^5.8.2",
     "@react-navigation/native": "^5.5.1",
     "@react-navigation/stack": "^5.5.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-15": "^1.4.1",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "fs": "0.0.1-security",
     "react": "16.11.0",
+    "react-dom": "^16.13.1",
     "react-native": "0.62.2",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-picker-select": "^7.0.0",
@@ -26,6 +31,7 @@
     "react-native-safe-area-context": "^3.0.5",
     "react-native-screens": "^2.8.0",
     "react-native-swipe-gestures": "^1.0.5",
+    "react-native-testing-library": "^2.1.0",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^4.3.9",
     "react-navigation-stack": "^2.7.0",
@@ -38,10 +44,12 @@
     "@babel/runtime": "^7.6.2",
     "@react-native-community/eslint-config": "^0.0.5",
     "babel-jest": "^24.9.0",
+    "babel-preset-react-native": "^4.0.1",
     "eslint": "^6.5.1",
     "jest": "^24.9.0",
+    "jest-react-native": "^18.0.0",
     "metro-react-native-babel-preset": "^0.58.0",
-    "react-test-renderer": "16.11.0"
+    "react-test-renderer": "^16.11.0"
   },
   "jest": {
     "preset": "react-native"
