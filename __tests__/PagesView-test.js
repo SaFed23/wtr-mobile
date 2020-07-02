@@ -21,7 +21,7 @@ beforeEach(() => {
     num = 1;
 });
 
-it.skip("Test: get snapshot of component", () => {
+it("Test: get snapshot of component", () => {
     const wrapper = shallow(
         <PagesView
             countOfWeek={num}
