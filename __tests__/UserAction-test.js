@@ -26,7 +26,7 @@ it("Test: change user location", () => {
 it("Test: user authorization", async () => {
     const mockStore = configureStore([thunk]);
     const store = mockStore({user: usersReducer});
-    global.fetch = jest.fn((user) => {
+    const fetch = jest.fn((user) => {
         return new Promise((resolve) => {
             resolve({
                 json: () => new Promise(resolve => {
