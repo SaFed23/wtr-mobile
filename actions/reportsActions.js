@@ -35,7 +35,7 @@ export function initReports(date, token) {
 }
 
 export function saveReportAction(arrWithNewReports, reports, token) {
-    return dispatch => {
+    return async dispatch => {
         const arrToCreate = arrWithNewReports
             .filter(report => report.method === "POST")
             .map(report => {
@@ -121,7 +121,6 @@ export function saveReportAction(arrWithNewReports, reports, token) {
                     }
                 })
                 .catch(err => console.log("err with update: ", err.message));
-
         }
     }
 }
