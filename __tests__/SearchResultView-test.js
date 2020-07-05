@@ -4,6 +4,7 @@ import SearchResultView from "../components/SearchResultView";
 import {shallow, configure} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import {TouchableOpacity} from "react-native";
+import toJson from "enzyme-to-json";
 
 configure({ adapter: new Adapter() });
 
@@ -35,7 +36,7 @@ beforeAll(() => {
 });
 
 it("Test: get snapshot of component", () => {
-    expect(wrapper).toMatchSnapshot();
+    expect(toJson(wrapper)).toMatchSnapshot();
 });
 
 it("Test: count of dates in state", () => {

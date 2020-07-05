@@ -4,6 +4,7 @@ import {shallow, configure} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import PagesView from "../components/PagesView";
 import {Text, TouchableOpacity} from "react-native";
+import toJson from "enzyme-to-json";
 
 configure({ adapter: new Adapter() });
 
@@ -28,7 +29,7 @@ it("Test: get snapshot of component", () => {
             decreaseCountOfWeek={decrease}
             increaseCountOfWeek={increase}
         />);
-    expect(wrapper).toMatchSnapshot();
+    expect(toJson(wrapper)).toMatchSnapshot();
 });
 
 it("Test: decrease of count of weeks", () => {
