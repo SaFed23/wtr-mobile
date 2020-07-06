@@ -1,22 +1,18 @@
 import "react-native";
 import React from "react";
 import {usersReducer} from "../reducers/usersReducer";
-import {shallow, configure} from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import Login from "../containers/Login";
-import toJson from "enzyme-to-json";
-
-configure({ adapter: new Adapter() });
+import renderer from "react-test-renderer"
 
 const mockStore = configureStore([thunk]);
 const store = mockStore({user: usersReducer});
-const wrapper = shallow(
+const test = renderer.create(
     <Login store={store}/>
 );
 
 
 it("Test: get snapshot of login", () => {
-    expect(toJson(wrapper)).toMatchSnapshot();
+    expect(test.toJSON()).toMatchSnapshot();
 });
