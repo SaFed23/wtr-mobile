@@ -1,15 +1,12 @@
 import "react-native";
 import React from "react";
 import SearchResultView from "../components/SearchResultView";
-import {shallow, configure} from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
 import {TouchableOpacity} from "react-native";
-import toJson from "enzyme-to-json";
+import renderer from "react-test-renderer"
 
-configure({ adapter: new Adapter() });
-
-let wrapper;
+let test;
 let answer;
+let root;
 
 const props = {
     route: {
@@ -28,30 +25,31 @@ const props = {
 }
 
 beforeAll(() => {
-    wrapper = shallow(
+    test = renderer.create(
         <SearchResultView
             route={props.route}
             navigation={props.navigation}
             />);
+    root = test.root;
 });
 
 it("Test: get snapshot of component", () => {
-    expect(toJson(wrapper)).toMatchSnapshot();
+    expect(test.toJSON()).toMatchSnapshot();
 });
 
 it("Test: count of dates in state", () => {
-    const instance = wrapper.instance();
+    const instance = test.getInstance();
     expect(instance.state.arrWithDates.length).toEqual(2);
 });
 
 it("Test: count of touchable opacity", () => {
-    expect(wrapper.find(TouchableOpacity).length).toEqual(2);
+    expect(root.findAllByType(TouchableOpacity).length).toEqual(2);
 });
 
 it("Test: on press date", () => {
-    const button = wrapper.find(TouchableOpacity);
-    button.at(0).simulate('press');
+    const [button1, button2] = [...root.findAllByType(TouchableOpacity)];
+    button1._fiber.pendingProps.onPress();
     expect(answer).toEqual("Go to ResultDetails with date 2020-06-20");
-    button.at(1).simulate('press');
+    button2._fiber.pendingProps.onPress();
     expect(answer).toEqual("Go to ResultDetails with date 2020-06-25");
 });
