@@ -8,7 +8,6 @@ import {getReportsDataAction} from "../actions/reportsDataActions";
 function Reports(props) {
     return (
         <ReportsView
-            route={props.route}
             navigation={props.navigation}
             user={props.user}
             reports={props.reports}
