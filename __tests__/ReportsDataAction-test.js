@@ -1,5 +1,5 @@
 import {getReportsDataAction} from "../actions/reportsDataActions";
-import {reportsDataReducer} from "../reducers/reportsDataReducers";
+import {initialState as reportsDataReducer} from "../reducers/reportsDataReducers";
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 

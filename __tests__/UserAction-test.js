@@ -1,5 +1,5 @@
 import {changeLocation, userAuthorization} from "../actions/usersActions";
-import {USER_LOCATION, usersReducer} from "../reducers/usersReducer";
+import {USER_LOCATION, initialState as usersReducer} from "../reducers/usersReducer";
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 

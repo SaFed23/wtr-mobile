@@ -1,6 +1,6 @@
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import {reportsReducer} from "../reducers/reportsReducer";
+import {initialState as reportsReducer} from "../reducers/reportsReducer";
 import {initReports, saveReportAction} from "../actions/reportsActions";
 
 const mockStore = configureStore([thunk]);
