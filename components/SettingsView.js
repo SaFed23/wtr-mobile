@@ -2,20 +2,11 @@ import React from "react";
 import {ScrollView, Text, View} from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import {Picker} from '@react-native-community/picker';
-import {getLocations} from "../routes/reportsDataRoutes";
 
 class SettingsView extends React.Component {
-    state = {
-        locations: [],
-    }
-
-    componentDidMount() {
-        getLocations(this.props.user.currentUser.token)
-            .then(data => this.setState({locations: data}));
-    }
 
     onChooseLocation(value) {
-        const location = this.state.locations.find(location => location.locationId === value);
+        const location = this.props.locations.find(location => location.locationId === value);
         this.props.changeLocation(location);
         try {
             (async () => {
@@ -45,11 +36,11 @@ class SettingsView extends React.Component {
                             <Picker
                                 selectedValue={this.props.user.location === null ? null
                                     : this.props.user.location.locationId}
-                                onValueChange={(itemValue, itemIndex) =>
+                                onValueChange={(itemValue) =>
                                     this.onChooseLocation(itemValue)
                                 }>
                                 <Picker.Item label="Select a location..." value={null} />
-                                {this.state.locations
+                                {this.props.locations
                                     .map(location => {
                                         return <Picker.Item
                                             key={location.locationId}

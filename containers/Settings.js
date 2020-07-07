@@ -8,6 +8,7 @@ function Settings (props) {
         <SettingsView
             user={props.user}
             changeLocation={props.changeLocation}
+            locations={props.locations}
         />
     )
 }
@@ -15,6 +16,7 @@ function Settings (props) {
 const mapStateToProps = store => {
     return {
         user: store.user,
+        locations: store.reportsData.locations,
     }
 };
 
