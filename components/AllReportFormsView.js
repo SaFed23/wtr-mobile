@@ -195,9 +195,7 @@ class AllReportFormsView extends React.Component {
                 this.props.saveReport(updatesReports,
                     this.props.allReports.reports,
                     this.props.user.currentUser.token);
-                this.props.navigation.navigate('Reports', {
-                    key: true,
-                })
+                this.props.navigation.navigate('Reports')
             }
         }
     }
