@@ -1,6 +1,7 @@
 import React from "react";
-import {Text, TouchableOpacity, View, StyleSheet, ActivityIndicator, TextInput, ScrollView} from "react-native";
+import {Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView} from "react-native";
 import {Picker} from '@react-native-community/picker';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 
 class ReportFormView extends React.Component {
@@ -28,17 +29,17 @@ class ReportFormView extends React.Component {
                 <ScrollView>
                     {Object.keys(this.state.currentReport).length !== 0 ? (
                         <View style={{flexDirection: "column", justifyContent: "center"}}>
-                            <View style={{marginLeft: "5%", marginTop: "3%"}}>
-                                <Text style={{fontSize: 14, color: "#616161"}}>
+                            <View style={{marginLeft: wp(5), marginTop: hp(2)}}>
+                                <Text style={{fontSize: hp(1.8), color: "#616161"}}>
                                     Status: {this.props.arrWithReports[this.props.currentReport].method === "POST"
                                     ? "NEW" : this.props.arrWithReports[this.props.currentReport].report.status}
                                 </Text>
                             </View>
-                            <View style={{borderBottomWidth: 1, marginLeft: "5%", marginRight: "5%", borderColor: "lightblue"}}>
+                            <View style={styles.selectItem}>
                                     <Picker
                                         selectedValue={this.state.currentReport.project === null ? null
                                             : this.state.currentReport.project.projectId}
-                                        onValueChange={(itemValue, itemIndex) =>
+                                        onValueChange={(itemValue) =>
                                             this.props.onChooseProject(itemValue)
                                         }>
                                         <Picker.Item label="Select a project..." value={null} />
@@ -54,7 +55,7 @@ class ReportFormView extends React.Component {
                                 <Picker
                                     selectedValue={this.state.currentReport.feature === null ? null
                                         : this.state.currentReport.feature.featureId}
-                                    onValueChange={(itemValue, itemIndex) =>
+                                    onValueChange={(itemValue) =>
                                         this.props.onChooseFeature(itemValue)
                                     }>
                                     <Picker.Item label="Select a feature..." value={null} />
@@ -74,7 +75,7 @@ class ReportFormView extends React.Component {
                                 <Picker
                                     selectedValue={this.state.currentReport.task === null ? null
                                         : this.state.currentReport.task.taskId}
-                                    onValueChange={(itemValue, itemIndex) =>
+                                    onValueChange={(itemValue) =>
                                         this.props.onChooseTask(itemValue)
                                     }>
                                     <Picker.Item label="Select a task..." value={null} />
@@ -94,7 +95,7 @@ class ReportFormView extends React.Component {
                                 <Picker
                                     selectedValue={this.state.currentReport.detailedTask === null ? null
                                         : this.state.currentReport.detailedTask.detailedTaskId}
-                                    onValueChange={(itemValue, itemIndex) =>
+                                    onValueChange={(itemValue) =>
                                         this.props.onChooseDetailedTask(itemValue)
                                     }>
                                     <Picker.Item label="Select a detailed task..." value={null} />
@@ -110,8 +111,8 @@ class ReportFormView extends React.Component {
                                             })}
                                 </Picker>
                             </View>
-                            <View style={{flexDirection: "row", justifyContent: "space-between", marginLeft: "5%", marginRight: "5%"}}>
-                                <Text style={[styles.text, {marginLeft: "2%"}]}>
+                            <View style={{flexDirection: "row", justifyContent: "space-between", marginLeft: wp(5), marginRight: wp(5)}}>
+                                <Text style={[styles.text, {marginLeft: wp(2)}]}>
                                     Hours
                                 </Text>
                                 <TextInput
@@ -132,7 +133,7 @@ class ReportFormView extends React.Component {
                                 <Picker
                                     selectedValue={this.state.currentReport.factor === null ? null
                                         : this.state.currentReport.factor.factorId}
-                                    onValueChange={(itemValue, itemIndex) =>
+                                    onValueChange={(itemValue) =>
                                         this.props.onChooseFactor(itemValue)
                                     }>
                                     <Picker.Item label="Select a factor..." value={null} />
@@ -146,7 +147,7 @@ class ReportFormView extends React.Component {
                                 </Picker>
                             </View>
                             <View style={styles.commentsView}>
-                                <Text style={[styles.text, {marginTop: "1%"}]}>
+                                <Text style={[styles.text, {marginTop: hp(0.5)}]}>
                                     Comments
                                 </Text>
                             </View>
@@ -171,7 +172,7 @@ class ReportFormView extends React.Component {
                                     onPress={this.props.onDeleteReport}
                                     disabled={this.props.arrWithReports.length === 1}
                                 >
-                                    <Text style={{fontSize: 20, marginTop: "5%", color: "white"}}>Delete</Text>
+                                    <Text style={{fontSize: hp(2.8), marginTop: hp(1.5), color: "white"}}>Delete</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -184,53 +185,55 @@ class ReportFormView extends React.Component {
 
 const styles = StyleSheet.create({
     buttonBack: {
-        margin: "2%",
-        width: "20%"
+        margin: wp(2),
+        width: wp(20)
     },
     text: {
-        fontSize: 17,
-        marginTop: "6%"
+        fontSize: hp(2.3),
+        marginTop: hp(3)
     },
     selectItem: {
-        borderBottomWidth: 1,
-        marginLeft: "5%",
-        marginRight: "5%",
+        borderBottomWidth: wp(0.3),
+        marginLeft: wp(5),
+        marginRight: wp(5),
         borderColor: "lightblue"
     },
     inputField: {
-        width: 90,
-        height: 40,
+        width: wp(25),
+        height: hp(6),
+        fontSize: hp(1.7),
         borderColor: 'lightblue',
-        borderWidth: 2,
-        borderRadius: 10,
-        marginTop: "4%"
+        borderWidth: wp(0.5),
+        borderRadius: hp(2),
+        marginTop: hp(2),
     },
     inputCommentsField: {
-        width: "100%",
-        height: 120,
+        width: wp(93),
+        height: hp(20),
+        fontSize: hp(1.7),
         borderColor: 'lightblue',
-        borderWidth: 2,
-        borderRadius: 10
+        borderWidth: wp(0.5),
+        borderRadius: hp(2),
     },
     blockWithHours: {
         flexDirection: "row",
         justifyContent: "space-between",
-        marginTop: "5%",
-        marginRight: "5%",
-        marginLeft: "5%"
+        marginTop: hp(2),
+        marginRight: wp(5),
+        marginLeft: wp(5),
     },
     commentsView: {
         flexDirection: "row",
         justifyContent: "center",
-        marginLeft: "5%",
-        marginRight: "5%",
-        marginTop: "3%"
+        marginLeft: wp(5),
+        marginRight: wp(5),
+        marginTop: hp(1.5),
     },
     button: {
-        width: 180,
-        height: 50,
-        margin: "2%",
-        borderRadius: 10,
+        width: wp(40),
+        height: hp(7),
+        margin: wp(2),
+        borderRadius: hp(2),
         flexDirection: "row",
         justifyContent: "center"
     }

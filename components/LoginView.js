@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     ActivityIndicator
 } from "react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 class LoginView extends React.Component {
     state = {
@@ -44,7 +45,7 @@ class LoginView extends React.Component {
     render() {
         return (
             <>
-                <View style={{flexDirection: "row", justifyContent: "center", marginTop: "40%"}}>
+                <View style={styles.labelView}>
                     <Text style={styles.label}>WTR Lite</Text>
                 </View>
                 <View style={[styles.container, styles.horizontal]}>
@@ -53,20 +54,20 @@ class LoginView extends React.Component {
                                        animating={this.props.user.loading}/>
                 </View>
                 <View style={{flexDirection: "column", justifyContent: "center"}}>
-                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: "2%"}}>
+                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: hp(1)}}>
                         <Text style={styles.text}>Username</Text>
                     </View>
-                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: "2%"}}>
+                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: hp(1)}}>
                         <TextInput
                             style={styles.inputField}
                             value={this.state.username}
                             onChange={text => this.onChangeLogin(text)}
                         />
                     </View>
-                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: "4%"}}>
+                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: hp(1.5)}}>
                         <Text style={styles.text}>Password</Text>
                     </View>
-                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: "2%"}}>
+                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: hp(1)}}>
                         <TextInput
                             style={styles.inputField}
                             secureTextEntry={true}
@@ -79,9 +80,9 @@ class LoginView extends React.Component {
                                 {this.props.user.message}
                             </Text>
                     </View>
-                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: "7%"}}>
+                    <View style={{flexDirection: "row", justifyContent: "center", marginTop: hp(2)}}>
                         <TouchableOpacity style={styles.button} onPress={this.onLogin}>
-                            <Text style={{fontSize: 20, color: "white", marginTop: "5%"}}>Login</Text>
+                            <Text style={styles.buttonText}>Login</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -91,27 +92,38 @@ class LoginView extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    labelView: {
+        flexDirection: "row",
+        justifyContent: "center",
+        marginTop: hp(20),
+    },
     label: {
-        fontSize: 40,
+        fontSize: hp(6),
     },
     inputField: {
-        width: 250,
-        height: 40,
+        width: wp(60),
+        height: hp(6),
         borderColor: 'lightblue',
-        borderWidth: 2,
-        borderRadius: 10
+        borderWidth: wp(0.5),
+        borderRadius: hp(1.5),
+        fontSize: hp(1.7)
     },
     text: {
-        fontSize: 20,
-        marginRight: "2%"
+        fontSize: hp(2.5),
+        marginRight: wp(1),
     },
     button: {
         backgroundColor: "lightgreen",
-        width: 200,
-        height: 50,
-        borderRadius: 10,
+        width: wp(50),
+        height: hp(7),
+        borderRadius: hp(1.5),
         flexDirection: "row",
         justifyContent: "center"
+    },
+    buttonText: {
+        fontSize: hp(2.7),
+        color: "white",
+        marginTop: hp(1.5),
     }
 });
 

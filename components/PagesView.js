@@ -1,11 +1,12 @@
 import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 function PagesView(props) {
     return (
         <>
             <View style={{flexDirection: "row", justifyContent: "center"}}>
-                <Text style={{fontSize: 20, marginTop: "2%"}}>Count of week</Text>
+                <Text style={{fontSize: hp(3), marginTop: hp(1)}}>Count of week</Text>
             </View>
             <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                 <TouchableOpacity
@@ -21,7 +22,7 @@ function PagesView(props) {
                 </TouchableOpacity>
                 <View style={{flexDirection: "row", justifyContent: "center"}}>
                     <View style={{flexDirection: "column", justifyContent: "center"}}>
-                        <Text style={{fontSize: 30}}>{props.countOfWeek}</Text>
+                        <Text style={{fontSize: hp(5.3)}}>{props.countOfWeek}</Text>
                     </View>
                 </View>
                 <TouchableOpacity
@@ -42,22 +43,22 @@ function PagesView(props) {
 
 const styles = StyleSheet.create({
     disabledButton: {
-        margin: "4%",
+        margin: hp(2),
         backgroundColor: "rgba(154,222,130,0.42)",
         opacity: 100,
-        width: "20%",
-        height: 40,
-        borderRadius: 6,
+        width: wp(20),
+        height: hp(5),
+        borderRadius: hp(1),
     },
     button: {
-        margin: "4%",
+        margin: hp(2),
         backgroundColor: "#9ade82",
-        width: "20%",
-        height: 40,
-        borderRadius: 6,
+        width: wp(20),
+        height: hp(5),
+        borderRadius: hp(1),
     },
     char: {
-        fontSize: 30,
+        fontSize: hp(4),
         color: "white",
         fontWeight: "bold",
     },

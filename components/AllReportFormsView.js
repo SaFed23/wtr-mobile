@@ -1,8 +1,9 @@
 import React from "react";
 import GestureRecognizer from 'react-native-swipe-gestures';
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View, Dimensions} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import ReportFormView from "./ReportFormView";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 class AllReportFormsView extends React.Component {
     state = {
@@ -170,7 +171,7 @@ class AllReportFormsView extends React.Component {
             )
         });
         if(index !== -1) {
-            this.setState({message: `Select a location in your account settingsS`})
+            this.setState({message: `Select a location in your account settings`})
         } else {
             index = this.state.arrWithReports.findIndex(report => {
                 return (
@@ -201,31 +202,32 @@ class AllReportFormsView extends React.Component {
     }
 
     render() {
+        const index = Dimensions.get("window").height / Dimensions.get("window").width;
         const config = {
             velocityThreshold: 0.3,
             directionalOffsetThreshold: 80
         };
         return (
             <>
-                <TouchableOpacity style={{margin: "2%", width: "20%"}}
+                <TouchableOpacity style={{margin: wp(2), width: wp(16)}}
                                   onPress={() => {this.props.navigation.goBack()}}>
                     <View style={{flexDirection: "row"}}>
-                        <Icon name={"angle-left"} size={30}/>
-                        <Text style={{fontSize: 23, marginLeft: "5%"}}>Back</Text>
+                        <Icon name={"angle-left"} size={hp(4)}/>
+                        <Text style={{fontSize: hp(3), marginLeft: wp(2)}}>Back</Text>
                     </View>
                 </TouchableOpacity>
                 <View style={{flexDirection: "row", justifyContent: "center"}}>
-                    <Text style={{fontSize: 23}}>
+                    <Text style={{fontSize: hp(3)}}>
                         Report for {this.props.date}
                     </Text>
                 </View>
                 <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-                    <TouchableOpacity style={{marginTop: "2%", width: "5%"}}
+                    <TouchableOpacity style={{marginTop: hp(1), width: wp(5)}}
                                       onPress={this.onSwipeRight}>
                         <View style={{flexDirection: "row"}}>
                             <Icon
                                 name={"arrow-left"}
-                                size={20}
+                                size={hp(3)}
                                 color={this.state.currentReport === 0 ? "lightgray" : "black"}
                             />
                         </View>
@@ -233,15 +235,15 @@ class AllReportFormsView extends React.Component {
                     <TouchableOpacity style={[styles.buttonActionWithReports, {backgroundColor: "green"}]}
                                       onPress={this.onAddReport}>
                         <View style={{flexDirection: "row", justifyContent: "center"}}>
-                            <Text style={{fontSize: 18, color: "white"}}>Add report</Text>
+                            <Text style={{fontSize: hp(2.3), color: "white"}}>Add report</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ marginTop: "2%", width: "5%"}}
+                    <TouchableOpacity style={{ marginTop: hp(1), width: wp(4)}}
                                       onPress={this.onSwipeLeft}>
                         <View style={{flexDirection: "row"}}>
                             <Icon
                                 name={"arrow-right"}
-                                size={20}
+                                size={hp(3)}
                                 color={this.state.currentReport === this.state.arrWithReports.length - 1 ? "lightgray" : "black"}
                             />
                         </View>
@@ -251,7 +253,7 @@ class AllReportFormsView extends React.Component {
                     onSwipeLeft={(state) => this.onSwipeLeft(state)}
                     onSwipeRight={(state) => this.onSwipeRight(state)}
                     config={config}
-                    style={{height: "70%"}}
+                    style={{height: index < 1.8 ? hp(60) : hp(65)}}
                 >
                     {this.state.arrWithReports.length ? (
                         <>
@@ -273,18 +275,18 @@ class AllReportFormsView extends React.Component {
                         />
                         </>) : <Text>""</Text>}
                 </GestureRecognizer>
-                <View style={{flexDirection: "row", justifyContent: "center", marginTop: "7%"}}>
+                <View style={{flexDirection: "row", justifyContent: "center", marginTop: hp(2)}}>
                     <TouchableOpacity
                         style={[styles.button, {backgroundColor: "lightgreen"}]}
                         onPress={this.onSubmit.bind(this, "REGISTERED")}
                     >
-                        <Text style={{fontSize: 20, marginTop: "5%"}}>Submit</Text>
+                        <Text style={{fontSize: hp(2.5), marginTop: hp(1.5)}}>Submit</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={[styles.button, {backgroundColor: "lightgray"}]}
                         onPress={this.onSubmit.bind(this, "PRIVATE")}
                     >
-                        <Text style={{fontSize: 20, marginTop: "5%"}}>Submit as private</Text>
+                        <Text style={{fontSize: hp(2.5), marginTop: hp(1.5)}}>Submit as private</Text>
                     </TouchableOpacity>
                 </View>
             </>
@@ -294,15 +296,15 @@ class AllReportFormsView extends React.Component {
 
 const styles = StyleSheet.create({
     buttonActionWithReports: {
-        marginTop: "2%",
-        width: "30%",
-        borderRadius: 6,
+        marginTop: hp(1),
+        width: wp(30),
+        borderRadius: hp(1),
     },
     button: {
-        width: 180,
-        height: 50,
-        margin: "2%",
-        borderRadius: 10,
+        width: wp(43),
+        height: hp(7),
+        margin: wp(2),
+        borderRadius: hp(2),
         flexDirection: "row",
         justifyContent: "center"
     }

@@ -1,7 +1,8 @@
 import React from "react";
-import {ScrollView, Text, View} from "react-native";
+import {ScrollView, Text, View, StyleSheet} from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import {Picker} from '@react-native-community/picker';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 class SettingsView extends React.Component {
 
@@ -21,19 +22,20 @@ class SettingsView extends React.Component {
         return (
             <>
                 <View style={{flexDirection: "row", justifyContent: "center"}}>
-                    <Text style={{fontSize: 23}}>
+                    <Text style={{fontSize: hp(3)}}>
                         Settings
                     </Text>
                 </View>
                 <ScrollView>
-                    <View style={{flexDirection: "column", justifyContent: "center", marginTop: "5%"}}>
+                    <View style={{flexDirection: "column", justifyContent: "center", marginTop: hp(2)}}>
                         <View style={{flexDirection: "row", justifyContent: "center"}}>
-                            <Text style={{fontSize: 20}}>
+                            <Text style={{fontSize: hp(2.5)}}>
                                 Location
                             </Text>
                         </View>
-                        <View style={{borderBottomWidth: 1, marginLeft: "5%", marginRight: "5%", borderColor: "lightblue"}}>
+                        <View style={styles.viewWithPicker}>
                             <Picker
+                                style={styles.picker}
                                 selectedValue={this.props.user.location === null ? null
                                     : this.props.user.location.locationId}
                                 onValueChange={(itemValue) =>
@@ -55,5 +57,18 @@ class SettingsView extends React.Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    viewWithPicker: {
+        borderBottomWidth: 1,
+        marginLeft: wp(4),
+        marginRight: wp(4),
+        borderColor: "lightblue"
+    },
+    picker: {
+        height: hp(5),
+
+    }
+});
 
 export default SettingsView;

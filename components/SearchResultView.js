@@ -1,6 +1,7 @@
 import React from "react";
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 class SearchResultView extends React.Component {
     state = {
@@ -27,10 +28,10 @@ class SearchResultView extends React.Component {
     render() {
         return (
             <>
-                <View style={{flexDirection: "row", justifyContent: "center", marginTop: "2 %"}}>
-                    <Text style={{fontSize: 20}}>Searching result</Text>
+                <View style={{flexDirection: "row", justifyContent: "center", marginTop: hp(1)}}>
+                    <Text style={{fontSize: hp(3)}}>Searching result</Text>
                 </View>
-                <ScrollView style={{marginTop: "5%"}}>
+                <ScrollView style={{marginTop: hp(2)}}>
                     <View style={{
                         flexDirection: "row",
                         flexWrap: "wrap",
@@ -45,8 +46,8 @@ class SearchResultView extends React.Component {
                                     <Text style={styles.date}>
                                         {date}
                                     </Text>
-                                    <View style={{marginTop: "5%", marginRight: "3%"}}>
-                                        <Icon name={"angle-right"} size={40} color={"black"}/>
+                                    <View style={{marginTop: hp(3), marginRight: wp(3)}}>
+                                        <Icon name={"angle-right"} size={hp(5)} color={"black"}/>
                                     </View>
                                 </View>
                             </TouchableOpacity>
@@ -60,20 +61,20 @@ class SearchResultView extends React.Component {
 
 const styles = StyleSheet.create({
     date: {
-        marginTop: "5%",
-        marginLeft: "8%",
-        fontSize: 30,
+        marginTop: hp(3),
+        marginLeft: wp(7),
+        fontSize: hp(4),
         fontWeight: "bold"
     },
     buttonWithDate: {
-        marginLeft: "4%",
-        marginRight: "4%",
-        marginBottom: "2%",
-        width: 380,
-        height: 100,
-        borderRadius: 20,
+        marginLeft: wp(4),
+        marginRight: wp(4),
+        marginBottom: hp(1),
+        width: wp(93),
+        height: hp(14),
+        borderRadius: hp(3),
         borderColor: "lightblue",
-        borderWidth: 8
+        borderWidth: wp(2)
     }
 });
 

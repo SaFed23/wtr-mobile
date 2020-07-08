@@ -3,6 +3,7 @@ import {Text, ScrollView, TouchableOpacity, View, StyleSheet, ActivityIndicator}
 import AsyncStorage from "@react-native-community/async-storage";
 import Icon from "react-native-vector-icons/FontAwesome";
 import PagesView from "./PagesView";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 class ReportsView extends React.Component {
     state = {
@@ -82,7 +83,7 @@ class ReportsView extends React.Component {
     }
 
     setColor = (reports) => {
-        let color = "";
+        let color;
         if (reports.length === 0) {
             color = "#bd1010";
         } else {
@@ -118,8 +119,8 @@ class ReportsView extends React.Component {
                                 <Text style={styles.date}>
                                     {date.date}
                                 </Text>
-                                <View style={{marginTop: "8%", marginRight: "3%"}}>
-                                    <Icon name={"angle-right"} size={40} color={"white"}/>
+                                <View style={{marginTop: hp(4), marginRight: wp(3)}}>
+                                    <Icon name={"angle-right"} size={hp(5.5)} color={"white"}/>
                                 </View>
                             </View>
                         </TouchableOpacity>
@@ -133,19 +134,19 @@ class ReportsView extends React.Component {
 
 const styles = StyleSheet.create({
     date: {
-        marginTop: "8%",
-        marginLeft: "8%",
+        marginTop: hp(4),
+        marginLeft: wp(6),
         color: "white",
-        fontSize: 30,
+        fontSize: hp(4),
         fontWeight: "bold"
     },
     buttonWithDate: {
-        marginLeft: "4%",
-        marginRight: "4%",
-        marginBottom: "2%",
-        width: 380,
-        height: 100,
-        borderRadius: 20,
+        marginLeft: wp(4),
+        marginRight: wp(4),
+        marginBottom: hp(1),
+        width: wp(93),
+        height: hp(14),
+        borderRadius: hp(3),
     }
 });
 

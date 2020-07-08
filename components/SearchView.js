@@ -2,6 +2,7 @@ import React from "react";
 import {ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {Picker} from "@react-native-community/picker";
 import {searchReportDetail} from "../routes/reportDetailsRoutes";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 class SearchView extends React.Component {
     state = {
@@ -79,19 +80,19 @@ class SearchView extends React.Component {
     render() {
         return (
             <>
-                <View style={{flexDirection: "row", justifyContent: "center", marginTop: "2 %"}}>
-                    <Text style={{fontSize: 20}}>Searching</Text>
+                <View style={{flexDirection: "row", justifyContent: "center", marginTop: hp(1)}}>
+                    <Text style={{fontSize: hp(2.5)}}>Searching</Text>
                 </View>
                 <ScrollView>
-                    <View style={{flexDirection: "row", justifyContent: "space-between", marginLeft: "5%", marginRight: "5%"}}>
-                        <Text style={[styles.text, {marginLeft: "14%"}]}>
+                    <View style={{flexDirection: "row", justifyContent: "space-between", marginLeft: wp(4), marginRight: wp(4)}}>
+                        <Text style={[styles.text, {marginLeft: wp(12)}]}>
                             Start date
                         </Text>
-                        <Text style={[styles.text, {marginRight: "18%"}]}>
+                        <Text style={[styles.text, {marginRight: wp(15)}]}>
                             End date
                         </Text>
                     </View>
-                    <View style={{flexDirection: "row", justifyContent: "space-between", marginLeft: "5%", marginRight: "5%"}}>
+                    <View style={{flexDirection: "row", justifyContent: "space-between", marginLeft: wp(4), marginRight: wp(4)}}>
                         <TextInput
                             style={styles.inputField}
                             value={this.state.dateStart}
@@ -103,10 +104,10 @@ class SearchView extends React.Component {
                             onChange={text => this.onChangeEndDate(text)}
                         />
                     </View>
-                    <View style={{borderBottomWidth: 1, marginLeft: "5%", marginRight: "5%", borderColor: "lightblue"}}>
+                    <View style={{borderBottomWidth: 1, marginLeft: wp(4), marginRight: wp(4), borderColor: "lightblue"}}>
                         <Picker
                             selectedValue={this.state.projectId}
-                            onValueChange={(itemValue, itemIndex) =>
+                            onValueChange={(itemValue) =>
                                 this.onChooseProject(itemValue)
                         }>
                             <Picker.Item label="Select a project..." value={""} />
@@ -121,7 +122,7 @@ class SearchView extends React.Component {
                     <View style={styles.selectItem}>
                         <Picker
                             selectedValue={this.state.featureId}
-                            onValueChange={(itemValue, itemIndex) =>
+                            onValueChange={(itemValue) =>
                                 this.onChooseFeature(itemValue)
                             }>
                             <Picker.Item label="Select a feature..." value={""} />
@@ -137,7 +138,7 @@ class SearchView extends React.Component {
                     <View style={styles.selectItem}>
                         <Picker
                             selectedValue={this.state.taskId}
-                            onValueChange={(itemValue, itemIndex) =>
+                            onValueChange={(itemValue) =>
                                 this.onChooseTask(itemValue)
                             }>
                             <Picker.Item label="Select a task..." value={""} />
@@ -153,7 +154,7 @@ class SearchView extends React.Component {
                     <View style={styles.selectItem}>
                         <Picker
                             selectedValue={this.state.detailedTaskId}
-                            onValueChange={(itemValue, itemIndex) =>
+                            onValueChange={(itemValue) =>
                                 this.onChooseDetailedTask(itemValue)
                             }>
                             <Picker.Item label="Select a detailed task..." value={""} />
@@ -169,7 +170,7 @@ class SearchView extends React.Component {
                     <View style={styles.selectItem}>
                         <Picker
                             selectedValue={this.state.factorId}
-                            onValueChange={(itemValue, itemIndex) =>
+                            onValueChange={(itemValue) =>
                                 this.onChooseFactor(itemValue)
                             }>
                             <Picker.Item label="Select a factor..." value={""} />
@@ -185,7 +186,7 @@ class SearchView extends React.Component {
                     <View style={styles.selectItem}>
                         <Picker
                             selectedValue={this.state.locationId}
-                            onValueChange={(itemValue, itemIndex) =>
+                            onValueChange={(itemValue) =>
                                 this.onChooseLocation(itemValue)
                             }>
                             <Picker.Item label="Select a location..." value={""} />
@@ -201,7 +202,7 @@ class SearchView extends React.Component {
                     <View style={styles.selectItem}>
                         <Picker
                             selectedValue={this.state.status}
-                            onValueChange={(itemValue, itemIndex) =>
+                            onValueChange={(itemValue) =>
                                 this.onChooseStatus(itemValue)
                             }>
                             <Picker.Item label="Select a status..." value={""} />
@@ -216,7 +217,7 @@ class SearchView extends React.Component {
                             style={styles.button}
                             onPress={this.onSearch}
                         >
-                            <Text style={{fontSize: 20, marginTop: "5%", color: "white"}}>Search</Text>
+                            <Text style={{fontSize: hp(3), marginTop: hp(1.2), color: "white"}}>Search</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -227,33 +228,30 @@ class SearchView extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    buttonBack: {
-        margin: "2%",
-        width: "20%"
-    },
     text: {
-        fontSize: 17,
-        marginTop: "6%"
+        fontSize: hp(2.3),
+        marginTop: hp(2),
     },
     selectItem: {
-        borderBottomWidth: 1,
-        marginLeft: "5%",
-        marginRight: "5%",
+        borderBottomWidth: wp(0.3),
+        marginLeft: wp(4),
+        marginRight: wp(4),
         borderColor: "lightblue"
     },
     inputField: {
-        width: 180,
-        height: 40,
+        width: wp(43),
+        height: hp(6),
+        fontSize: hp(1.7),
         borderColor: 'lightblue',
-        borderWidth: 2,
-        borderRadius: 10,
-        marginTop: "2%"
+        borderWidth: wp(0.5),
+        borderRadius: hp(2),
+        marginTop: hp(1),
     },
     button: {
-        width: 180,
-        height: 50,
-        margin: "2%",
-        borderRadius: 10,
+        width: wp(43),
+        height: hp(7),
+        margin: wp(3),
+        borderRadius: hp(2),
         flexDirection: "row",
         justifyContent: "center",
         backgroundColor: "lightgreen"
