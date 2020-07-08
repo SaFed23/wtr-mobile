@@ -1,5 +1,7 @@
+import {url} from "./constants";
+
 export async function getReports(date, token) {
-    let url = "http://10.0.2.2:8080/user/reportDetails/filter?";
+    let url = `${url}/user/reportDetails/filter?`;
     url += `dateStart=${date.dateStart}&`;
     url += `dateEnd=${date.dateEnd}`;
     return (await fetch(url, {
@@ -12,7 +14,7 @@ export async function getReports(date, token) {
 }
 
 export function saveReport(method, reports, token) {
-    return fetch(`http://10.0.2.2:8080/user/reportDetails/list`, {
+    return fetch(`${url}/user/reportDetails/list`, {
         method: method,
         headers: {
             'Content-Type': 'application/json',
@@ -23,7 +25,7 @@ export function saveReport(method, reports, token) {
 }
 
 export function searchReportDetail(report, token) {
-    let url = "http://10.0.2.2:8080/user/reportDetails/filter?";
+    let url = `${url}/user/reportDetails/filter?`;
     if(report.status)
         url += `status=${report.status}&`;
     if(report.projectId)
