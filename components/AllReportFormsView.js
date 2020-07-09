@@ -3,6 +3,7 @@ import GestureRecognizer from 'react-native-swipe-gestures';
 import {StyleSheet, Text, TouchableOpacity, View, Dimensions} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import ReportFormView from "./ReportFormView";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 class AllReportFormsView extends React.Component {
@@ -208,7 +209,7 @@ class AllReportFormsView extends React.Component {
             directionalOffsetThreshold: 80
         };
         return (
-            <>
+            <KeyboardAwareScrollView>
                 <TouchableOpacity style={{margin: wp(2), width: wp(16)}}
                                   onPress={() => {this.props.navigation.goBack()}}>
                     <View style={{flexDirection: "row"}}>
@@ -253,7 +254,7 @@ class AllReportFormsView extends React.Component {
                     onSwipeLeft={(state) => this.onSwipeLeft(state)}
                     onSwipeRight={(state) => this.onSwipeRight(state)}
                     config={config}
-                    style={{height: index < 1.8 ? hp(60) : hp(65)}}
+                    style={{height: index < 1.8 ? hp(58) : hp(65)}}
                 >
                     {this.state.arrWithReports.length ? (
                         <>
@@ -289,7 +290,7 @@ class AllReportFormsView extends React.Component {
                         <Text style={{fontSize: hp(2.5), marginTop: hp(1.5)}}>Submit as private</Text>
                     </TouchableOpacity>
                 </View>
-            </>
+            </KeyboardAwareScrollView>
         );
     }
 }

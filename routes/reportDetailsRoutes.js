@@ -25,26 +25,27 @@ export function saveReport(method, reports, token) {
 }
 
 export function searchReportDetail(report, token) {
-    let url = `${url}/user/reportDetails/filter?`;
+    let currentUrl = `${url}/user/reportDetails/filter?`;
     if(report.status)
-        url += `status=${report.status}&`;
+        currentUrl += `status=${report.status}&`;
     if(report.projectId)
-        url += `projectId=${report.projectId}&`;
+        currentUrl += `projectId=${report.projectId}&`;
     if(report.taskId)
-        url += `taskId=${report.taskId}&`;
+        currentUrl += `taskId=${report.taskId}&`;
     if(report.detailedTaskId)
-        url += `detailedTaskId=${report.detailedTaskId}&`;
+        currentUrl += `detailedTaskId=${report.detailedTaskId}&`;
     if(report.featureId)
-        url += `featureId=${report.featureId}&`;
+        currentUrl += `featureId=${report.featureId}&`;
     if(report.factorId)
-        url += `factorId=${report.factorId}&`;
+        currentUrl += `factorId=${report.factorId}&`;
     if(report.locationId)
-        url += `locationId=${report.locationId}&`;
+        currentUrl += `locationId=${report.locationId}&`;
     if(report.dateStart)
-        url += `dateStart=${report.dateStart}&`;
+        currentUrl += `dateStart=${report.dateStart}&`;
     if(report.dateEnd)
-        url += `dateEnd=${report.dateEnd}&`;
-    return fetch(url, {
+        currentUrl += `dateEnd=${report.dateEnd}&`;
+    console.log(currentUrl)
+    return fetch(currentUrl, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',

@@ -5,8 +5,9 @@ import {
     View,
     StyleSheet,
     TouchableOpacity,
-    ActivityIndicator
+    ActivityIndicator,
 } from "react-native";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
 class LoginView extends React.Component {
@@ -44,12 +45,12 @@ class LoginView extends React.Component {
 
     render() {
         return (
-            <>
+            <KeyboardAwareScrollView>
                 <View style={styles.labelView}>
                     <Text style={styles.label}>WTR Lite</Text>
                 </View>
                 <View style={[styles.container, styles.horizontal]}>
-                    <ActivityIndicator size="large" 
+                    <ActivityIndicator size="large"
                                        color="lightblue"
                                        animating={this.props.user.loading}/>
                 </View>
@@ -86,12 +87,17 @@ class LoginView extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </>
+            </KeyboardAwareScrollView>
         )
     }
 }
 
 const styles = StyleSheet.create({
+    inner: {
+        padding: 24,
+        flex: 1,
+        justifyContent: "space-around"
+    },
     labelView: {
         flexDirection: "row",
         justifyContent: "center",
@@ -124,6 +130,9 @@ const styles = StyleSheet.create({
         fontSize: hp(2.7),
         color: "white",
         marginTop: hp(1.5),
+    },
+    container: {
+        flex: 1,
     }
 });
 
